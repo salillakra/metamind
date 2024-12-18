@@ -3,8 +3,6 @@
 import { connectDB } from "@/db/connect"
 import { PostModel } from "@/db/post"
 
-
-
 export const CreatePost = async ({ title, category, _id }: { title: string, category: string, _id: string }) => {
     try {
         await connectDB()
