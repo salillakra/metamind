@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import Link from "next/link"
+import Logo from "../components/Logo"
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -57,11 +58,15 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen">
-
-
+    <div className="flex relative justify-center items-center h-screen">
+      <div className="absolute top-5 left-5 ">
+        <Logo />
+      </div>
       <div className=" w-full mx-3 sm:mx-0 md:w-96 flex flex-col ">
-        <h1 className="text-3xl font-bold underline mb-4">Sign In</h1>
+        <h1 className="text-3xl  mb-8">Welcome Back <span className=" 
+        bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent">
+
+          Dear</span></h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -82,7 +87,7 @@ export default function LoginPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>password</FormLabel>
+                  <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input type="password" placeholder="********" {...field} />
                   </FormControl>

@@ -15,8 +15,12 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Checkbox } from "@/components/ui/checkbox"
 import { signup } from "@/db/signup"
 import Link from "next/link"
+import Logo from "../components/Logo"
+import { Label } from "@/components/ui/label"
+import { DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu"
 
 const formSchema = z.object({
     firstName: z.string().min(1, "First name is required"),
@@ -53,13 +57,19 @@ export default function SignupPage() {
 
     return (
         <>
+            <div className="relative top-5 left-5 ">
+                <Logo />
+            </div>
             <div className="flex justify-center items-center">
 
-                <div className="w-full mx-3 sm:mx-0 md:w-96 flex flex-col">
-                    <h1 className="text-2xl font-bold underline my-3">Sign Up</h1>
+                <div className="w-full mx-3 sm:mx-0 md:w-96 flex mt-10 md:mt-2 flex-col">
+                    <h1 className="md:text-3xl text-2xl mb-8">
+                        Sign Up To <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent">Get Started🚀</span>
+                    </h1>
+
 
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-2">
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 mb-10">
                             <div className="flex gap-4">
                                 <FormField
                                     control={form.control}
@@ -144,7 +154,13 @@ export default function SignupPage() {
                                 )}
                             />
 
-                            <Button size={"sm"} className="inline-block" type="submit">Sign Up</Button>
+                            <div className="flex items-center gap-2">
+
+                                <Checkbox id="terms" />
+                                <Label className="cursor-pointer" htmlFor="terms">Accept terms and conditions</Label>
+                            </div>
+
+                            <Button size={"default"} className="inline-block w-1/2 mx-auto" type="submit">Sign Up</Button>
                             <p className="text-center">
                                 Already have an account?{" "}
                                 <Link href="/signin" className="text-blue-500">

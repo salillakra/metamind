@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IPost extends Document {
+  _id: mongoose.Types.ObjectId;
   authorId: mongoose.Types.ObjectId;
   title: string;
   content: string;
@@ -23,13 +24,14 @@ export interface IComment {
 // Post Schema
 const PostSchema: Schema = new Schema(
   {
+    _id: { type: mongoose.Schema.Types.ObjectId },
     authorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
     title: { type: String, required: true },
-    content: { type: String, required: true },
+    content: { type: String, default: "", require: false },
     tags: { type: [String], default: [] },
     category: { type: String, required: true },
     status: { type: String, enum: ["draft", "published"], default: "draft" },
@@ -49,4 +51,10 @@ const PostSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-export const PostModel = mongoose.model<IPost>("Post", PostSchema);
+
+// Check if the model already exists
+const PostModel = mongoose.models.Post || mongoose.model<IPost>("Post", PostSchema);
+
+export { PostModel };
+
+

@@ -2,19 +2,49 @@ import { NextRequest, NextResponse } from "next/server";
 import * as jose from "jose";
 
 export const GET = async (req: NextRequest) => {
-  const cookieStore = req.cookies;
-  const token = cookieStore.get("token");
+  try {
+    const cookieStore = req.cookies;
+    const token = cookieStore.get("token");
 
-  const secret = new TextEncoder().encode(process.env.SECRET!);
+    if (!token) {
+      return NextResponse.json(
+        { error: "No authentication token found" },
+        { status: 401 }
+      );
+    }
 
-  const user = await jose.jwtVerify(token!.value, secret, {
-    algorithms: ["HS256"],
-  });
+    if (!process.env.SECRET) {
+      return NextResponse.json(
+        { error: "Server configuration error" },
+        { status: 500 }
+      );
+    }
 
-  if (!user) {
-    return NextResponse.json({
-      error: "Invalid token",
-    });
+    const secret = new TextEncoder().encode(process.env.SECRET);
+
+    try {
+      const user = await jose.jwtVerify(token.value, secret, {
+        algorithms: ["HS256"],
+      });
+
+      if (!user) {
+        return NextResponse.json(
+          { error: "Invalid token" },
+          { status: 401 }
+        );
+      }
+
+      return NextResponse.json({ payload: user.payload });
+    } catch (jwtError) {
+      return NextResponse.json(
+        { error: "Invalid token format" },
+        { status: 401 }
+      );
+    }
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
-  return NextResponse.json(user.payload);
 };

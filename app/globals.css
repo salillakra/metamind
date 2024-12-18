@@ -1,12 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=Corinthia&display=swap");
 
-.logo-font {
-  font-family: "Corinthia", cursive;
-  font-weight: 400;
-  font-style: normal;
+
+html,body{
+  /* overflow-x: hidden; */
 }
 
 body {
