@@ -4,6 +4,7 @@ export interface IPost extends Document {
   _id: mongoose.Types.ObjectId;
   authorId: mongoose.Types.ObjectId;
   title: string;
+  imageURL: string;
   content: string;
   tags: string[];
   category: string;
@@ -31,7 +32,8 @@ const PostSchema: Schema = new Schema(
       required: true,
     },
     title: { type: String, required: true },
-    content: { type: String, default: "", require: false },
+    imageURL: { type: String, default: "" },
+    content: { type: String, default: ""},
     tags: { type: [String], default: [] },
     category: { type: String, required: true },
     status: { type: String, enum: ["draft", "published"], default: "draft" },
