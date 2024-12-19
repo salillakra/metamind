@@ -5,6 +5,7 @@ const Logout = () => {
     const router = useRouter()
     return (
         <button
+            type="button"
             onClick={async () => {
                 try {
                     const response = await fetch("/api/logout", { method: "POST" });

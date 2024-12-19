@@ -20,7 +20,7 @@ export const signup = async (userdata: SignupInput) => {
 		// Hash the password before saving
 		const hashedPassword = await bcrypt.hash(
 			userdata.password,
-			process.env.SALT_ROUNDS || "10",
+			Number.parseInt(process.env.SALT_ROUNDS || "10"),
 		);
 
 		// Create a new user instance

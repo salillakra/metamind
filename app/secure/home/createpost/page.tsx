@@ -24,10 +24,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useContext } from "react";
 import { Upload, X } from "lucide-react";
 import { CreatePost } from "@/Post/action";
 import { useToast } from "@/hooks/use-toast";
+import Image from "next/image";
+import { useAuth } from "@/hooks/useAuth";
+import { PostData } from "../layout";
+import useImageUpload from "@/hooks/useImageUpload";
+import Spinner from "@/app/components/Spinner";
 
 const categories: [string, ...string[]] = [
 	"Technology",
@@ -57,23 +62,11 @@ const formSchema = z.object({
 	category: z.enum(categories),
 });
 
-const getUser = async () => {
-	const response = await fetch("/api/user", {
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
-	if (!response.ok) {
-		throw new Error(`Failed to get user: ${response.status}`);
-	}
-	const user = await response.json();
-	return user.payload;
-};
-
-export default function SignupPage() {
+export default function Page() {
+	const { uploading, uploadedUrl, error, uploadImage } = useImageUpload();
+	const { setPost } = useContext(PostData);
+	const { user } = useAuth();
 	const { toast } = useToast();
-	const [imagePreview, setImagePreview] = useState<string | null>(null);
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -83,16 +76,28 @@ export default function SignupPage() {
 	});
 	const router = useRouter();
 
+	console.log("this is from createpost", uploadedUrl);
+
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		// Handle form submission
-		const user = await getUser();
-		console.log({ ...values, _id: user._id });
-		const response = await CreatePost({ ...values, _id: user._id });
+		if (!user) {
+			toast({
+				title: "Error",
+				description: "You need to be signed in to create a post",
+			});
+			return false;
+		}
+		const response = await CreatePost({ ...values, _id: user?._id });
 		if (response?.success) {
+			setPost({
+				title: values.title,
+				category: values.category,
+			});
 			toast({
 				title: "Post Created",
 				description: "Your post has been created successfully",
 			});
+			router.push("/secure/home/createpost/step-2");
 		} else {
 			toast({
 				title: "Error",
@@ -102,14 +107,12 @@ export default function SignupPage() {
 	}
 
 	// Handle file input change (for drag and drop and click-to-upload)
-	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleFileChange = async (
+		event: React.ChangeEvent<HTMLInputElement>,
+	) => {
 		const file = event.target.files?.[0];
 		if (file) {
-			const reader = new FileReader();
-			reader.onloadend = () => {
-				setImagePreview(reader.result as string);
-			};
-			reader.readAsDataURL(file);
+			await uploadImage(file);
 		}
 	};
 
@@ -119,23 +122,20 @@ export default function SignupPage() {
 		event.stopPropagation();
 	};
 
-	const handleDrop = (event: React.DragEvent) => {
+	const handleDrop = async (event: React.DragEvent) => {
 		event.preventDefault();
 		event.stopPropagation();
 
 		const file = event.dataTransfer.files?.[0];
 		if (file) {
-			const reader = new FileReader();
-			reader.onloadend = () => {
-				setImagePreview(reader.result as string);
-			};
-			reader.readAsDataURL(file);
+			await uploadImage(file);
 		}
 	};
 
 	return (
 		<>
 			<div className="flex justify-center h-[90vh] items-center">
+				{uploading && <Spinner /> /*// Show spinner while uploading */}
 				<div className="flex flex-col w-[93.55%] md:w-[70%]">
 					<Form {...form}>
 						<form
@@ -148,20 +148,16 @@ export default function SignupPage() {
 								onDragOver={handleDragOver}
 								onDrop={handleDrop}
 							>
-								{imagePreview ? (
+								{uploadedUrl ? (
 									<div className="relative w-full">
-										<div
-											onClick={() => setImagePreview("")}
-											onKeyUp={(e) => {
-												if (e.key === "Enter") setImagePreview("");
-											}}
-											className="bg-red-500 absolute grid place-items-center -right-4 top-0 h-8 w-8  rounded-[100%]  cursor-pointer"
-										>
+										<div className="bg-red-500 absolute grid place-items-center -right-4 top-0 h-8 w-8  rounded-[100%]  cursor-pointer">
 											<X size={"lg"} />
 										</div>
 										<div className="mt-4 flex justify-center">
-											<img
-												src={imagePreview}
+											<Image
+												src={uploadedUrl}
+												height={300}
+												width={400}
 												alt="Preview"
 												className="h-64 w-full object-cover rounded-md"
 											/>
@@ -212,7 +208,7 @@ export default function SignupPage() {
 							<FormField
 								control={form.control}
 								name="category"
-								render={({ field }) => (
+								render={() => (
 									<Select>
 										<Label>Category</Label>
 										<SelectTrigger className="w-[180px]">
