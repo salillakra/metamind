@@ -9,6 +9,7 @@ cloudinary.config({
 
 interface SuccessResponse {
 	secure_url: string;
+	public_id: string;
 }
 
 interface ErrorResponse {

@@ -24,15 +24,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useContext } from "react";
 import { Upload, X } from "lucide-react";
-import { CreatePost } from "@/Post/action";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { useAuth } from "@/hooks/useAuth";
-import { PostData } from "../layout";
 import useImageUpload from "@/hooks/useImageUpload";
 import Spinner from "@/app/components/Spinner";
+import { CurrentPost } from "@/store/CurrentPost";
 
 const categories: [string, ...string[]] = [
 	"Technology",
@@ -64,7 +62,6 @@ const formSchema = z.object({
 
 export default function Page() {
 	const { uploading, uploadedUrl, error, uploadImage } = useImageUpload();
-	const { setPost } = useContext(PostData);
 	const { user } = useAuth();
 	const { toast } = useToast();
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -76,10 +73,7 @@ export default function Page() {
 	});
 	const router = useRouter();
 
-	console.log("this is from createpost", uploadedUrl);
-
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		// Handle form submission
 		if (!user) {
 			toast({
 				title: "Error",
@@ -87,23 +81,24 @@ export default function Page() {
 			});
 			return false;
 		}
-		const response = await CreatePost({ ...values, _id: user?._id });
-		if (response?.success) {
-			setPost({
+
+		// Update the CurrentPost store with the Post details
+		CurrentPost.setState((state) => {
+			return {
+				...state,
+				authorId: user._id,
 				title: values.title,
 				category: values.category,
-			});
-			toast({
-				title: "Post Created",
-				description: "Your post has been created successfully",
-			});
-			router.push("/secure/home/createpost/step-2");
-		} else {
-			toast({
-				title: "Error",
-				description: "An error occurred while creating your post",
-			});
-		}
+				imageURL: uploadedUrl || "",
+			};
+		});
+
+		toast({
+			title: "Details Saved",
+			description: "Moving to the next step",
+		});
+
+		router.push("/secure/home/createpost/step-2");
 	}
 
 	// Handle file input change (for drag and drop and click-to-upload)
@@ -234,7 +229,7 @@ export default function Page() {
 								className="inline-block w-1/3 mx-auto"
 								type="submit"
 							>
-								Create🚀
+								Continue
 							</Button>
 						</form>
 					</Form>

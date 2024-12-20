@@ -5,31 +5,37 @@ This content is protected by copyright law and may not be reproduced, distribute
 
 "use client";
 
-import { useTags } from "@/hooks/useTags";
+import { Button } from "@/components/ui/button";
+import { tagsStore } from "@/store/Tags";
+import { useStore } from "@tanstack/react-store";
 import React, { useState } from "react";
 
 const Tag = ({
 	tag,
 	index,
 	tags,
-	setTags,
 }: {
 	tag: string;
 	index: number;
 	tags: string[];
-	setTags: React.Dispatch<React.SetStateAction<string[]>>;
 }) => {
 	const DeleteTag = (index: number) => {
 		const newTags = [...tags];
 		newTags.splice(index, 1);
-		setTags(newTags);
+		tagsStore.setState((state) => {
+			return {
+				...state,
+				tags: newTags,
+			};
+		});
 	};
+
 	return (
 		<React.Fragment>
-			<div className="bg-gray-900 p-2 rounded-lg flex items-center gap-2">
+			<div className="bg-purple-900 p-2 rounded-md flex items-center gap-2">
 				<div>
 					<span className="text-gray-400">#</span>
-					<span className="text-white font-thin italic">{tag}</span>
+					<span className="text-white font-thin">{tag}</span>
 				</div>
 				{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 				<button
@@ -58,25 +64,29 @@ const Tag = ({
 };
 
 const TagPicker = () => {
-	const [inputValue, setInputValue] = useState("");
-	const { tags, setTags } = useTags();
+	const [inputValue, setInputValue] = useState<string>("");
+	const tags = useStore(tagsStore, (state) => state.tags);
 	const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (inputValue !== "") {
-			setTags([...tags, inputValue]);
-		}
+		if (inputValue === "") return;
+		tagsStore.setState((state) => {
+			return {
+				...state,
+				tags: [...state.tags, inputValue],
+			};
+		});
 		setInputValue("");
 	};
 	return (
 		<div className="flex justify-center h-fit w-full">
-			<div className="px-4 w-[80%] sm:w-[50%]  md:max-w-80 py-2 flex flex-col bg-gray-800 rounded-lg">
+			<div className="p-2 flex flex-col bg-primary-foreground rounded-md">
 				<div className="flex gap-2 flex-wrap">
 					{tags.length !== 0 &&
 						tags.map((tag, index) => (
 							<Tag
+								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 								key={index}
 								tags={tags}
-								setTags={setTags}
 								index={index}
 								tag={tag}
 							/>
@@ -87,14 +97,11 @@ const TagPicker = () => {
 						placeholder="Enter Tags"
 						value={inputValue}
 						onChange={(e) => setInputValue(e.target.value)}
-						className="bg-gray-800 p-2 focus:outline-none focus:border-0"
+						className="bg-primary-foreground w-full p-2 focus:outline-none focus:border-0"
 					/>
-					<button
-						type="submit"
-						className="bg-gray-900 p-2 mt-2 rounded-lg hover:bg-slate-800 transition-all"
-					>
-						Add Tag
-					</button>
+					<Button variant={"secondary"} type="submit">
+						Add
+					</Button>
 				</form>
 			</div>
 		</div>

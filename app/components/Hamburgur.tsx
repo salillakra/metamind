@@ -25,7 +25,7 @@ const Hamburgur = ({
 			onClick={() => setOpen(false)}
 		>
 			<div
-				className={`absolute left-0 top-0 h-full w-[35%] bg-slate-950 shadow-2xl transition-transform duration-500 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+				className={`absolute left-0 top-0 h-full w-[75%] md:w-[60%] bg-slate-950 shadow-2xl transition-transform duration-500 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
 				onKeyDown={(e) => e.key === "Enter" && setOpen(false)}
 				onClick={(e) => e.stopPropagation()}
 			>

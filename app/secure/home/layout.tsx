@@ -2,7 +2,7 @@
 
 import { Menu, Pen, StickyNote } from "lucide-react";
 import Link from "next/link";
-import { createContext, useState } from "react";
+import { useState } from "react";
 import { LogOut, User } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -54,28 +54,14 @@ interface LayoutProps {
 	children: React.ReactNode;
 }
 
-// PostData context
-export const PostData = createContext<{
-	title: string;
-	category: string;
-	setPost: React.Dispatch<
-		React.SetStateAction<{ title: string; category: string }>
-	>;
-}>({
-	title: "",
-	category: "",
-	setPost: () => {},
-});
-
 const Layout = ({ children }: LayoutProps) => {
 	const { user, loading } = useAuth();
-	const [post, setPost] = useState({ title: "", category: "" });
 	const [isOpen, setOpen] = useState<boolean>(false);
 	return (
 		<div className="flex flex-col relative">
 			<Hamburgur isOpen={isOpen} setOpen={setOpen} />
 
-			<div className="flex justify-between items-center p-4 bg-slate-950 text-white">
+			<div className="flex justify-between items-center p-4 bg-primary-foreground text-white">
 				<div
 					onKeyDown={(e) => {
 						if (e.key === "Enter" || e.key === " ") {
@@ -96,8 +82,8 @@ const Layout = ({ children }: LayoutProps) => {
 			<div className="flex">
 				{loading && <Spinner />}
 				<div className="flex-col hidden md:flex items-center justify-start">
-					<div className="w-64 bg-slate-950  border-t border-gray-500 text-white h-[90vh]">
-						<div className="flex justify-start items-center p-4 bg-slate-950 text-white">
+					<div className="w-64 bg-primary-foreground border-t border-gray-500 text-white h-[90vh]">
+						<div className="flex justify-start items-center p-4 bg-primary-foregroundtext-white">
 							{<span className="text-md">Welcome, {user?.firstName}! 🚀</span>}
 						</div>
 						<div className="pt-2 border-t font-thin text-md border-gray-500">
@@ -122,11 +108,8 @@ const Layout = ({ children }: LayoutProps) => {
 						</div>
 					</div>
 				</div>
-				<PostData.Provider
-					value={{ title: post.title, category: post.category, setPost }}
-				>
-					<div className="w-full">{children}</div>
-				</PostData.Provider>
+
+				<div className="w-full">{children}</div>
 			</div>
 		</div>
 	);

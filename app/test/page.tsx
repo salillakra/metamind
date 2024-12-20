@@ -1,10 +1,11 @@
 import React from 'react'
 import TagPicker from '../components/TagPicker'
+import TagMenu from '../components/TagMenu'
 
 const page = () => {
   return (
 	<div>
-		<TagPicker/>
+		<TagMenu/>
 	</div>
   )
 }
