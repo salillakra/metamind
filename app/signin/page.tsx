@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { authenticateUser } from "@/auth/action";
+import { authenticateUser } from "@/auth/signin";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -97,7 +97,7 @@ export default function LoginPage() {
 									<FormControl>
 										<Input
 											type="email"
-											placeholder="yourname@domain.com"
+											placeholder="e.g. yourname@gmail.com"
 											{...field}
 										/>
 									</FormControl>

@@ -20,14 +20,28 @@ import useLogout from "@/hooks/useLogout";
 import Spinner from "@/app/components/Spinner";
 import Hamburgur from "@/app/components/Hamburgur";
 
-function DropdownMenuprofile() {
+interface IUSER {
+	_id: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	username: string;
+	profilePic: string;
+	bio: string;
+}
+
+function DropdownMenuprofile({ user }: { user: IUSER }) {
 	const { logout } = useLogout();
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
 				<div className="flex items-center space-x-2 cursor-pointer">
 					<Avatar>
-						<AvatarImage src="/image.png" alt="@doggy" />
+						<AvatarImage
+							className="object-cover"
+							src={user.profilePic}
+							alt="@doggy"
+						/>
 						<AvatarFallback>DG</AvatarFallback>
 					</Avatar>
 				</div>
@@ -75,16 +89,18 @@ const Layout = ({ children }: LayoutProps) => {
 				</div>
 
 				<Logo />
-				<div>
-					<DropdownMenuprofile />
-				</div>
+				<div>{user && <DropdownMenuprofile user={user} />}</div>
 			</div>
 			<div className="flex">
 				{loading && <Spinner />}
 				<div className="flex-col hidden md:flex items-center justify-start">
 					<div className="w-64 bg-primary-foreground border-t border-gray-500 text-white h-[90vh]">
 						<div className="flex justify-start items-center p-4 bg-primary-foregroundtext-white">
-							{<span className="text-md">Welcome, {user?.firstName}! 🚀</span>}
+							{
+								<span className="text-md">
+									Welcome, {`${user?.firstName} ${user?.lastName}`}! 🚀
+								</span>
+							}
 						</div>
 						<div className="pt-2 border-t font-thin text-md border-gray-500">
 							<div className=" cursor-pointer hover:bg-slate-900 transition-all px-4 py-2">

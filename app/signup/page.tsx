@@ -6,6 +6,13 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import {
 	Form,
 	FormControl,
 	FormDescription,
@@ -16,26 +23,34 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { signup } from "@/db/signup";
+import { signup } from "@/auth/signup";
 import Link from "next/link";
 import Logo from "../components/Logo";
 import { Label } from "@/components/ui/label";
-import { set } from "mongoose";
 import { useState } from "react";
 import Spinner from "../components/Spinner";
 import { toast } from "@/hooks/use-toast";
+import { userIdStore } from "@/store/Signup";
+
+const genderOptions: [string, ...string[]] = [
+	"Male",
+	"Female",
+	"Non-binary",
+	"Other",
+	"Prefer not to say",
+];
 
 const formSchema = z
 	.object({
 		firstName: z.string().min(1, "First name is required"),
 		lastName: z.string().min(1, "Last name is required"),
 		username: z.string().min(3, "Username is required"),
+		gender: z.enum(genderOptions),
 		email: z.string().email("Invalid email address"),
 		password: z.string().min(8, "Password must be at least 8 characters long"),
 		confirmPassword: z
 			.string()
 			.min(8, "Password must be at least 8 characters long"),
-		checkbox: z.boolean(),
 	})
 	.refine((data) => data.password === data.confirmPassword, {
 		message: "Passwords don't match",
@@ -54,20 +69,26 @@ export default function SignupPage() {
 			email: "",
 			password: "",
 			confirmPassword: "",
-			checkbox: false,
 		},
 	});
 	const router = useRouter();
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		setloading(true);
-		const message = await signup(values);
-		if (message !== null && message !== undefined) {
+		const res = await signup(values);
+		if (res.success) {
+			userIdStore.setState((state) => {
+				return {
+					...state,
+					_id: res._id,
+				};
+			});
 			setloading(false);
-			toast({ variant: "destructive", description: message });
+			router.push("/signup/upload-profile");
+		} else {
+			setloading(false);
+			toast({ variant: "destructive", description: res.message });
 		}
-		router.push("/signin");
-		setloading(false);
 	}
 
 	return (
@@ -134,12 +155,41 @@ export default function SignupPage() {
 							/>
 							<FormField
 								control={form.control}
+								name="gender"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Gender</FormLabel>
+										<Select
+											onValueChange={field.onChange}
+											defaultValue={field.value}
+										>
+											<FormControl>
+												<SelectTrigger>
+													<SelectValue placeholder="Gender" />
+												</SelectTrigger>
+											</FormControl>
+											<SelectContent>
+												{genderOptions.map((option) => {
+													return (
+														<SelectItem key={option} value={option}>
+															{option}
+														</SelectItem>
+													);
+												})}
+											</SelectContent>
+										</Select>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
 								name="email"
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel>Email</FormLabel>
 										<FormControl>
-											<Input placeholder="yourname@bitmesra.ac.in" {...field} />
+											<Input placeholder="e.g. yourname@gmail.com" {...field} />
 										</FormControl>
 										<FormMessage />
 									</FormItem>

@@ -56,8 +56,8 @@ const categories: [string, ...string[]] = [
 ];
 
 const formSchema = z.object({
-	title: z.string().min(1, "Title is required"),
-	category: z.enum(categories),
+	title: z.string().min(1, "Title is required").nonempty("Title is required"),
+	category: z.enum(categories, { required_error: "Category is required" }),
 });
 
 export default function Page() {
@@ -68,7 +68,6 @@ export default function Page() {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			title: "",
-			category: categories[0],
 		},
 	});
 	const router = useRouter();
@@ -203,8 +202,11 @@ export default function Page() {
 							<FormField
 								control={form.control}
 								name="category"
-								render={() => (
-									<Select>
+								render={({ field }) => (
+									<Select
+										onValueChange={field.onChange}
+										defaultValue={field.value}
+									>
 										<Label>Category</Label>
 										<SelectTrigger className="w-[180px]">
 											<SelectValue placeholder="Select a category" />

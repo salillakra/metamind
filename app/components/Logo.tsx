@@ -14,8 +14,8 @@ function Logo({ className }: { className?: string }) {
         <div>
             {" "}
             <Link
-                className={`${font.className}  text-4xl antialiased ${className}`}
-                href="/secure/home"
+                className={`${font.className} p-2 text-4xl antialiased ${className}`}
+                href="/"
             >
                 MetaMind
             </Link>
