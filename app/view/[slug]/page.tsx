@@ -2,6 +2,7 @@
 import { useParams } from "next/navigation";
 import React from "react";
 import Image from "next/image";
+import Spinner from "@/app/components/Spinner";
 
 const Page = () => {
 	const [post, setPost] = React.useState({
@@ -21,6 +22,7 @@ const Page = () => {
 	}
 
 	const [author, setAuthor] = React.useState<Author | null>(null); // New state for author details
+	const [loading, setLoading] = React.useState(true); // Loading state
 
 	const params = useParams();
 
@@ -29,12 +31,18 @@ const Page = () => {
 			.then((res) => res.json())
 			.then((data) => {
 				setPost(data.post);
-				setAuthor(data.author); // Setting the author data
+				setAuthor(data.author);
+				setLoading(false);
 			})
 			.catch((error) => {
 				console.error("Error fetching the post:", error);
+				setLoading(false);
 			});
 	}, [params.slug]);
+
+	if (loading) {
+		return <Spinner />;
+	}
 
 	return (
 		<div className="min-h-screen text-gray-100">
@@ -58,7 +66,7 @@ const Page = () => {
 					</p>
 					<div className="flex items-center mt-4 space-x-3">
 						<Image
-							src={author?.profilePic || "/default-profile.jpg"}
+							src={author?.profilePic || ""}
 							alt="Author Profile Picture"
 							width={50}
 							height={50}
@@ -79,7 +87,7 @@ const Page = () => {
 				<div className="flex flex-wrap gap-2 mb-4">
 					{post.tags.map((tag, index) => (
 						<span
-							key={index}
+							key={tag}
 							className="text-xs bg-blue-600 text-white px-3 py-1 rounded-full font-medium hover:bg-blue-400 transition duration-200"
 						>
 							#{tag}
