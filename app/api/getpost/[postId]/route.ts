@@ -7,9 +7,10 @@ export const GET = async (
 	req: NextRequest,
 	context: { params: { postId: string } },
 ) => {
+	// Destructure the postId from the context
 	const { params } = context;
 
-	await connectDB();
+	await connectDB(); // Connect to the database
 	try {
 		const post = await PostModel.findById(params.postId);
 		if (!post) {

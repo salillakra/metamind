@@ -40,6 +40,7 @@ const Page = () => {
 			});
 	}, [params.slug]);
 
+	//returing the spinner component if the loading state is true
 	if (loading) {
 		return <Spinner />;
 	}
