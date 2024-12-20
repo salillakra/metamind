@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Metamind
 
-## Getting Started
+Welcome to the Metamind project! This README will guide you through the setup and usage of the project.
 
-First, run the development server:
+## Table of Contents
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Introduction
+
+MetaMind is a blogging site that provides insightful articles on various topics. The project uses several environment variables shown below
+
+## Tech Stack
+
+Metamind is built using a modern tech stack to ensure high performance and scalability. The key technologies used in this project are:
+
+- **Next.js**: A React framework that enables server-side rendering and static site generation, providing a seamless user experience and improved SEO.
+- **TanStack Store**: A powerful state management library that helps manage the application's state efficiently.
+- **Tailwind CSS**: A utility-first CSS framework that allows for rapid UI development with a consistent design system.
+- **MongoDB**: A NoSQL database that stores data in a flexible, JSON-like format, making it easy to scale and manage.
+- **Mongoose**: An ODM (Object Data Modeling) library for MongoDB and Node.js, providing a straightforward way to model application data.
+- **Quill.js**: A rich text editor that offers a user-friendly interface for creating and editing content.
+
+These technologies work together to create a robust and maintainable codebase for the Metamind project.
+
+## Installation
+
+To get started with Metamind, follow these steps:
+
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/yourusername/metamind.git
+    ```
+2. Navigate to the project directory:
+    ```sh
+    cd metamind
+    ```
+3. Install the necessary dependencies:
+    ```sh
+    npm install
+    ```
+
+## Usage
+
+To run the project, use the following command:
+```sh
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Contributing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+We welcome contributions from the community. To contribute, please follow these steps:
 
-## Learn More
+1. Fork the repository.
+2. Create a new branch:
+    ```sh
+    git checkout -b feature-branch
+    ```
+3. Make your changes and commit them:
+    ```sh
+    git commit -m "Description of your changes"
+    ```
+4. Push to the branch:
+    ```sh
+    git push origin feature-branch
+    ```
+5. Open a pull request.
 
-To learn more about Next.js, take a look at the following resources:
+## Enviroment Varibles
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```env
+NODE_ENV="" #(development || production)
+SECRET=""
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# bcrypt
+SALT_ROUNDS=10 
 
-## Deploy on Vercel
+# mongoose connection
+MONGODB_URI=""
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# cloudinary
+CLOUDINARY_CLOUD_NAME=""
+CLOUDINARY_API_KEY=""
+CLOUDINARY_API_SECRET=""
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
