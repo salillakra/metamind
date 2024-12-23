@@ -9,6 +9,7 @@ interface IPost {
 	authorId: string;
 	status: "draft" | "published";
 	tags: string[];
+	description: string;
 	content: string;
 	imageURL: string;
 }
@@ -17,6 +18,7 @@ export const CreatePost = async ({
 	authorId,
 	category,
 	status,
+	description,
 	imageURL,
 	tags,
 	content,
@@ -26,6 +28,7 @@ export const CreatePost = async ({
 		const post = new PostModel({
 			authorId: authorId,
 			title: title,
+			description: description,
 			imageURL: imageURL,
 			category: category,
 			status: status,

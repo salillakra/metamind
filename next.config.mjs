@@ -10,6 +10,10 @@ const nextConfig = {
 				protocol: "https",
 				hostname: "wallpapers.com",
 			},
+			{
+				protocol: "https",
+				hostname:"easy-peasy.ai"
+			}
 		],
 	},
 };

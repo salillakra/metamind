@@ -10,6 +10,7 @@ export interface IPost extends Document {
 	category: string;
 	status: "draft" | "published";
 	likes: number;
+	views: number;
 	comments: IComment[];
 	createdAt: Date;
 	updatedAt: Date;
@@ -34,12 +35,25 @@ const PostSchema: Schema = new Schema(
 			ref: "User",
 			required: true,
 		},
+		likes: { type: Number, default: 0 },
+		views: { type: Number, default: 0 },
 		title: { type: String, required: true },
 		imageURL: { type: String, default: "", required: true },
 		content: { type: String, default: "", required: true },
 		tags: { type: [String], default: [] },
 		category: { type: String, required: true },
 		status: { type: String, enum: ["draft", "published"], default: "draft" },
+		comments: [
+			{
+				userId: {
+					type: mongoose.Schema.Types.ObjectId,
+					ref: "User",
+					required: true,
+				},
+				comment: { type: String, required: true },
+				createdAt: { type: Date, default: Date.now },
+			},
+		],
 	},
 	{ timestamps: true },
 );

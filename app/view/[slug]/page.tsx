@@ -3,12 +3,17 @@ import { useParams } from "next/navigation";
 import React from "react";
 import Image from "next/image";
 import Spinner from "@/app/components/Spinner";
+import { Eye, Heart } from "lucide-react";
+import { updateViews } from "@/Post/UpdateViews";
+
 
 const Page = () => {
 	const [post, setPost] = React.useState({
 		title: "",
 		category: "",
 		authorId: "",
+		likes: 0,
+		views: 0,
 		status: "draft",
 		createdAt: new Date(),
 		tags: [],
@@ -38,6 +43,10 @@ const Page = () => {
 				console.error("Error fetching the post:", error);
 				setLoading(false);
 			});
+
+		if (typeof params.slug === 'string') {
+			updateViews(params.slug);
+		}
 	}, [params.slug]);
 
 	//returing the spinner component if the loading state is true
@@ -49,7 +58,9 @@ const Page = () => {
 		<div className="min-h-screen text-gray-100">
 			{/* Hero Section */}
 			<div className="relative h-[29rem] sm:h-96 w-full overflow-hidden">
-				<img
+				<Image
+					height={500}
+					width={900}
 					src={post?.imageURL || "/default-image.jpg"}
 					alt="Post Cover"
 					className="absolute top-0 w-full h-full object-cover opacity-80 transform transition-transform duration-500 hover:scale-110"
@@ -63,7 +74,11 @@ const Page = () => {
 						{post.title || "Post Title Loading..."}
 					</h1>
 					<p className="text-sm mt-2">
-						Published on {new Date(post.createdAt).toDateString()}
+						Published on {new Date(post.createdAt).toLocaleDateString("en-IN", {
+							year: "numeric",
+							month: "long",
+							day: "numeric",
+						})}
 					</p>
 					<div className="flex items-center mt-4 space-x-3">
 						<Image
@@ -80,6 +95,17 @@ const Page = () => {
 							</p>
 						</div>
 					</div>
+					<div className="flex items-center space-x-4 mt-4">
+						<div className="flex text-red-500 items-center space-x-1">
+							<Heart />
+							<span>{post.likes || 0} Likes</span>
+						</div>
+						<div className="flex text-green-500 items-center space-x-1">
+							<Eye />
+							<span>{post.views || 0} Views</span>
+						</div>
+					</div>
+
 				</div>
 			</div>
 			{/* Content Section */}

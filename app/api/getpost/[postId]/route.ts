@@ -1,7 +1,11 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { PostModel } from "@/db/post";
 import { UserModel } from "@/db/user";
-import { connectDB } from "@/db/connect";
+
+/*
+Dear Developer, I tried here connecting with the db but if it's disconnected it's not connecting again. If we see pratically, we don't need because when ever the app is running it will connect to the db. But if you want to connect it here, you can do it by importing the connectDB function from "@/db/connect" and calling it before the PostModel.findById function.
+*/
+
 
 export const GET = async (
 	req: NextRequest,
@@ -10,7 +14,6 @@ export const GET = async (
 	// Destructure the postId from the context
 	const { params } = context;
 
-	await connectDB(); // Connect to the database
 	try {
 		const post = await PostModel.findById(params.postId);
 		if (!post) {

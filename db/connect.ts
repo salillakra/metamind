@@ -1,4 +1,5 @@
 'use server'
+
 import mongoose from "mongoose";
 
 const url = process.env.MONGODB_URI;
@@ -6,6 +7,7 @@ const url = process.env.MONGODB_URI;
 if (!url) {
   throw new Error("MONGODB_URI environment variable is not defined");
 }
+
 
 export const connectDB = async () => {
   try {
@@ -18,7 +20,7 @@ export const connectDB = async () => {
     process.exit(1); // Exit process with failure
   }
 
-  // Optional: Handle MongoDB connection events
+
   mongoose.connection.on("connected", () => {
     console.log("MongoDB connected successfully");
   });

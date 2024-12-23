@@ -17,6 +17,7 @@ import {
 import {
 	Form,
 	FormControl,
+	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
@@ -31,6 +32,7 @@ import { useAuth } from "@/hooks/useAuth";
 import useImageUpload from "@/hooks/useImageUpload";
 import Spinner from "@/app/components/Spinner";
 import { CurrentPost } from "@/store/CurrentPost";
+import { Textarea } from "@/components/ui/textarea";
 
 const categories: [string, ...string[]] = [
 	"Technology",
@@ -57,12 +59,14 @@ const categories: [string, ...string[]] = [
 
 const formSchema = z.object({
 	title: z.string().min(1, "Title is required").nonempty("Title is required"),
+	description: z.string().min(1, "Description is required").nonempty("Description is required"),
 	category: z.enum(categories, { required_error: "Category is required" }),
 });
 
 export default function Page() {
 	const { uploading, uploadedUrl, error, uploadImage } = useImageUpload();
 	const { user } = useAuth();
+	const router = useRouter()
 	const { toast } = useToast();
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -70,8 +74,10 @@ export default function Page() {
 			title: "",
 		},
 	});
-	const router = useRouter();
 
+
+
+	//onSubmit to update the store with the post details
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		if (!user) {
 			toast({
@@ -88,6 +94,7 @@ export default function Page() {
 				authorId: user._id,
 				title: values.title,
 				category: values.category,
+				description: values.description,
 				imageURL: uploadedUrl || "",
 			};
 		});
@@ -193,6 +200,28 @@ export default function Page() {
 										<FormControl>
 											<Input {...field} />
 										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+
+							{/* Description */}
+							<FormField
+								control={form.control}
+								name="description"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Post Description</FormLabel>
+										<FormControl>
+											<Textarea
+												placeholder="Write here..."
+												className="resize-none"
+												{...field}
+											/>
+										</FormControl>
+										<FormDescription>
+											A short description about your post
+										</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)}

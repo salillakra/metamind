@@ -47,15 +47,7 @@ const TagMenu = () => {
 			};
 		});
 		console.log(Post);
-		const response = await CreatePost({
-			title: Post.title,
-			authorId: Post.authorId,
-			category: Post.category,
-			status: Post.status,
-			imageURL: Post.imageURL,
-			tags: Post.tags,
-			content: Post.content,
-		});
+		const response = await CreatePost(Post);
 		if (response.success) {
 			toast({
 				variant: "default",

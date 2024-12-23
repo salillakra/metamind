@@ -5,6 +5,7 @@ export const CurrentPost = new Store({
 	imageURL: "",
 	title: "",
 	category: "",
+	description: "",
 	content: "",
 	status: "draft",
 	tags: [],
@@ -12,6 +13,7 @@ export const CurrentPost = new Store({
 	authorId: string;
 	imageURL: string;
 	title: string;
+	description: string;
 	category: string;
 	status: "draft" | "published";
 	content: string;

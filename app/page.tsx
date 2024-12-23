@@ -1,47 +1,70 @@
-// pages/index.js
-import React from 'react';
-import PostCard from './components/PostCard';
+"use client";
+import React, { useEffect, useState } from "react";
+import PostCard from "./components/PostCard";
+import Spinner from "./components/Spinner";
+
+type Post = {
+  post: {
+    _id: string;
+    title: string;
+    category: string;
+    imageURL: string;
+    tags: string[];
+    description: string;
+    createdAt: Date;
+    likes: number;
+    views: number;
+  };
+  author: {
+    profilePic: string;
+    firstName: string;
+    lastName: string;
+  };
+};
 
 const HomePage = () => {
-  const posts = [
-    {
-      title: 'Luci: A Captivating Cinematic Gem',
-      author: 'Salil Lakra',
-      category: 'Technology',
-      imageURL: 'https://res.cloudinary.com/dyu2yky4h/image/upload/v1734690866/MetaMind/zowgynkbts5hfnaoswps.jpg',
-      tags: ['dog', 'cat'],
-      content: 'A deep dive into the movie Luci, exploring its plot, direction, performances, and themes...',
-      createdAt: '2024-12-20T10:38:40.658Z',
-    },
-    {
-      title: 'Exploring the Future of AI',
-      author: 'John Doe',
-      category: 'AI & Machine Learning',
-      imageURL: 'https://res.cloudinary.com/dyu2yky4h/image/upload/v1734690866/MetaMind/sample-image.jpg',
-      tags: ['AI', 'future'],
-      content: 'This article discusses the advancements in AI, its impact on various industries, and future possibilities...',
-      createdAt: '2024-12-18T10:30:40.658Z',
-    },
-    // Add more posts here...
-  ];
+  const [data, setData] = useState({
+    posts: [] as Post[],
+    loading: true,
+    error: null,
+  });
+
+  const fetchPosts = async () => {
+    try {
+      const response = await fetch("/api/getAllPosts");
+      const result = await response.json();
+      setData({ posts: result.posts, loading: false, error: null });
+    } catch (error) {
+      console.error(error);
+      setData({ posts: [], loading: false, error: error.message });
+    }
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
   return (
-    <div className="bg-gray-900 min-h-screen text-gray-100">
-      <div className="max-w-screen-lg mx-auto p-8">
-        <h1 className="text-4xl font-bold text-white mb-8">Latest Posts</h1>
-        {posts.map((post, index) => (
-          <PostCard
-            key={index}
-            title={post.title}
-            author={post.author}
-            category={post.category}
-            imageURL={post.imageURL}
-            tags={post.tags}
-            content={post.content}
-            createdAt={post.createdAt}
-          />
-        ))}
-      </div>
+    <div className="h-screen px-4 text-gray-100">
+      <h1 className="text-4xl font-bold text-white mb-8">Latest Posts</h1>
+      {data.loading && <Spinner />}
+      {data.posts.map((post: Post) => (
+        <PostCard
+          link={`/view/${post.post._id}`}
+          key={post.post._id}
+          title={post.post.title}
+          category={post.post.category}
+          imageURL={post.post.imageURL}
+          tags={post.post.tags}
+          likes={post.post.likes}
+          views={post.post.views}
+          description={post.post.description}
+          createdAt={post.post.createdAt}
+          profilePic={post.author.profilePic}
+          firstName={post.author.firstName}
+          lastName={post.author.lastName}
+        />
+      ))}
     </div>
   );
 };
