@@ -30,7 +30,7 @@ interface IUSER {
 	bio: string;
 }
 
-function DropdownMenuprofile({ user }: { user: IUSER }) {
+export function DropdownMenuprofile({ user }: { user: IUSER }) {
 	const { logout } = useLogout();
 	return (
 		<DropdownMenu>

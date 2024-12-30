@@ -30,7 +30,7 @@ const commentcomp = () => {
 
 
     return (
-        <div>
+        <div className='mx-3'>
             <article className="p-6 text-base bg-white rounded-lg shadow-md dark:bg-primary-foreground">
                 <footer className="flex justify-between items-center mb-2">
                     <div className="flex items-center">
@@ -48,9 +48,7 @@ const commentcomp = () => {
                     </div>
                 </footer>
                 <p className="text-gray-700 dark:text-gray-300">
-                    Very straight-to-point article. Really worth time reading. Thank you! But tools are just the
-                    instruments for the UX designers. The knowledge of the design tools are as important as the
-                    creation of the design strategy.
+                    very informative
                 </p>
                 <div className="flex items-center mt-4 space-x-4">
                     <button
@@ -107,8 +105,6 @@ function CommentSection(props: any) {
                 </div>
 
                 <div className="mt-10 max-w-2xl mx-auto grid gap-5">
-                    {commentcomp()}
-                    {commentcomp()}
                     {commentcomp()}
                 </div>
             </div>

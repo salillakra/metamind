@@ -135,7 +135,7 @@ export default function Page() {
 
 	return (
 		<>
-			<div className="flex justify-center h-[90vh] items-center">
+			<div className="flex justify-center h-[90vh] overflow-scroll items-center">
 				{uploading && <Spinner /> /*// Show spinner while uploading */}
 				<div className="flex flex-col w-[93.55%] md:w-[70%]">
 					<Form {...form}>

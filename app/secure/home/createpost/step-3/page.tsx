@@ -46,7 +46,6 @@ const TagMenu = () => {
 				status: "published",
 			};
 		});
-		console.log(Post);
 		const response = await CreatePost(Post);
 		if (response.success) {
 			toast({

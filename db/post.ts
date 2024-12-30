@@ -7,6 +7,7 @@ export interface IPost extends Document {
 	imageURL: string;
 	content: string;
 	tags: string[];
+	discrpition: string;
 	category: string;
 	status: "draft" | "published";
 	likes: number;
@@ -38,6 +39,7 @@ const PostSchema: Schema = new Schema(
 		likes: { type: Number, default: 0 },
 		views: { type: Number, default: 0 },
 		title: { type: String, required: true },
+		discription: { type: String, default: "", required: true },
 		imageURL: { type: String, default: "", required: true },
 		content: { type: String, default: "", required: true },
 		tags: { type: [String], default: [] },
