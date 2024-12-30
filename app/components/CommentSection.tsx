@@ -74,7 +74,7 @@ function CommentSection(props: any) {
     return (
         <div className='flex justify-center mt-10'>
             <div className='container'>
-                <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+                <h2 className="scroll-m-20 mx-5 md:mx-10 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
                     Comments
                 </h2>
 
