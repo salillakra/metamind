@@ -71,8 +71,9 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
 	const { user, loading } = useAuth();
 	const [isOpen, setOpen] = useState<boolean>(false);
+	const [index, setIndex] = useState<number | null>(null);
 	return (
-		<div className="flex flex-col relative">
+		<div className="flex flex-col relative h-screen overflow-hidden">
 			<Hamburgur isOpen={isOpen} setOpen={setOpen} />
 
 			<div className="flex justify-between items-center p-4 bg-primary-foreground text-white">
@@ -98,21 +99,28 @@ const Layout = ({ children }: LayoutProps) => {
 						<div className="flex justify-start items-center p-4 bg-primary-foregroundtext-white">
 							{
 								<span className="text-md">
-									Welcome, {`${user?.firstName} ${user?.lastName}`}! 🚀
+									Welcome, {`${user?.firstName || " "} ${user?.lastName || " "}`}! 🚀
 								</span>
 							}
 						</div>
 						<div className="pt-2 border-t font-thin text-md border-gray-500">
-							<div className=" cursor-pointer hover:bg-slate-900 transition-all px-4 py-2">
+							
+							<div
+								className={`cursor-pointer hover:bg-slate-900 transition-all px-4 py-2 ${index === 0 ? "bg-slate-800" : ""}`}
+								onClick={() => setIndex(0)}
+							>
 								<Link
 									className="flex gap-2 items-center"
-									href="secure/home/my-Posts"
+									href="/secure/home/myposts"
 								>
 									<StickyNote />
 									My Posts
 								</Link>
 							</div>
-							<div className=" cursor-pointer hover:bg-slate-900 transition-all px-4 py-2">
+							<div
+								className={`cursor-pointer hover:bg-slate-900 transition-all px-4 py-2 ${index === 1 ? "bg-slate-800" : ""}`}
+								onClick={() => setIndex(1)}
+							>
 								<Link
 									className="flex gap-2 items-center"
 									href="/secure/home/createpost"

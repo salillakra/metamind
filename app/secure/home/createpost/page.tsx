@@ -134,8 +134,8 @@ export default function Page() {
 	};
 
 	return (
-		<>
-			<div className="flex justify-center h-[90vh] overflow-scroll items-center">
+		<div className="h-[90vh] py-5 overflow-auto">
+			<div className="flex my-5 justify-center items-center">
 				{uploading && <Spinner /> /*// Show spinner while uploading */}
 				<div className="flex flex-col w-[93.55%] md:w-[70%]">
 					<Form {...form}>
@@ -266,6 +266,7 @@ export default function Page() {
 					</Form>
 				</div>
 			</div>
-		</>
+
+		</div>
 	);
 }

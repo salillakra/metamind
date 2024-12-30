@@ -3,10 +3,9 @@ import React, { useEffect, useState } from "react";
 import PostCard from "./components/PostCard";
 import Spinner from "./components/Spinner";
 import Navbar from "./components/Navbar";
-import { DropdownMenuprofile } from "./secure/home/layout";
-import { useAuth } from "@/hooks/useAuth";
 
-type Post = {
+
+export type Post = {
   post: {
     _id: string;
     title: string;
