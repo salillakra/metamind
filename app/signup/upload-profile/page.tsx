@@ -60,7 +60,7 @@ const ProfileUploadPage: React.FC = () => {
 				title: "Success",
 				description: "Profile picture updated!",
 			});
-			router.push("/");
+			router.push("/signin");
 		} else {
 			setLoading(false);
 			toast({

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
 	Card,
 	CardContent,
@@ -45,7 +45,7 @@ const TagMenu = () => {
 				...state,
 				status: "published",
 			};
-		});	
+		});
 
 		console.log(Post)
 		const response = await CreatePost(Post);
@@ -61,7 +61,7 @@ const TagMenu = () => {
 				variant: "destructive",
 				title: "Failed to create post",
 				description: response.error,
-			});
+		});
 		}
 	};
 
@@ -87,9 +87,22 @@ const TagMenu = () => {
 			});
 		}
 	};
+
+	useEffect(() => {
+		const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+			event.preventDefault();
+			event.returnValue = "";
+		};
+
+		window.addEventListener("beforeunload", handleBeforeUnload);
+
+		return () => {
+			window.removeEventListener("beforeunload", handleBeforeUnload);
+		};
+	}, []);
+
 	return (
 		<>
-		<h1 className="text-2xl m-2 underline">Final step to create a post</h1>
 			<AlertDialog>
 				<div className="relative grid place-items-center inset-0 h-[81vh] w-full bg-[rgba(0,0,0,0.5)]">
 					<Card className="sm:w-96 w-[90%]">
@@ -115,7 +128,7 @@ const TagMenu = () => {
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel onClick={PublishThePost}>No</AlertDialogCancel>
+						<AlertDialogCancel onClick={DraftThePost}>No</AlertDialogCancel>
 						<AlertDialogAction onClick={PublishThePost}>Yes</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

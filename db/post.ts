@@ -7,7 +7,7 @@ export interface IPost extends Document {
 	imageURL: string;
 	content: string;
 	tags: string[];
-	discrpition: string;
+	description: string;
 	category: string;
 	status: "draft" | "published";
 	likes: number;
@@ -39,7 +39,7 @@ const PostSchema: Schema = new Schema(
 		likes: { type: Number, default: 0 },
 		views: { type: Number, default: 0 },
 		title: { type: String, required: true },
-		discription: { type: String, default: "", required: true },
+		description: { type: String, default: "", required: true },
 		imageURL: { type: String, default: "", required: true },
 		content: { type: String, default: "", required: true },
 		tags: { type: [String], default: [] },
@@ -61,7 +61,6 @@ const PostSchema: Schema = new Schema(
 );
 
 // Check if the model already exists
-const PostModel =
-	mongoose.models.Posts || mongoose.model<IPost>("Posts", PostSchema);
+const PostModel = mongoose.models.Posts || mongoose.model<IPost>("Posts", PostSchema);
 
 export { PostModel };

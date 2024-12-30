@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { MoveRight } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Spinner from "@/app/components/Spinner";
@@ -24,6 +24,19 @@ const Page = () => {
 		setLoading(false);
 		router.push("/secure/home/createpost/step-3");
 	}
+
+	useEffect(() => {
+			const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+				event.preventDefault();
+				event.returnValue = "";
+			};
+	
+			window.addEventListener("beforeunload", handleBeforeUnload);
+	
+			return () => {
+				window.removeEventListener("beforeunload", handleBeforeUnload);
+			};
+		}, []);
 
 	return (
 		<>

@@ -7,7 +7,7 @@ export const CurrentPost = new Store({
 	category: "",
 	description: "",
 	content: "",
-	status: "draft",
+	status: "published",
 	tags: [],
 } as {
 	authorId: string;
