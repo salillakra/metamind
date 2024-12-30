@@ -5,6 +5,7 @@ import Image from "next/image";
 import Spinner from "@/app/components/Spinner";
 import { Eye, Heart } from "lucide-react";
 import { updateViews } from "@/Post/UpdateViews";
+import CommentSection from "@/app/components/CommentSection";
 
 
 const Page = () => {
@@ -133,6 +134,7 @@ const Page = () => {
 					className="text-primary text-base leading-relaxed"
 				/>
 			</div>
+			<CommentSection post={post} author={author}/>
 		</div>
 	);
 };
