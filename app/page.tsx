@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import PostCard from "./components/PostCard";
 import Spinner from "./components/Spinner";
 import Navbar from "./components/Navbar";
+import { connectDB } from "@/db/connect";
 
 
 export type Post = {
@@ -33,7 +34,8 @@ const HomePage = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch("/api/getAllPosts");
+      await connectDB()
+      const response = await fetch("/api/get-all-published-posts");
       const result = await response.json();
       setData({ posts: result.posts, loading: false, error: null });
     } catch (error) {

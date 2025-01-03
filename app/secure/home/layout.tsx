@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, Pen, StickyNote } from "lucide-react";
+import { BadgePlus, Menu, Pen, StickyNote } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { LogOut, User } from "lucide-react";
@@ -19,6 +19,7 @@ import { useAuth } from "@/hooks/useAuth";
 import useLogout from "@/hooks/useLogout";
 import Spinner from "@/app/components/Spinner";
 import Hamburgur from "@/app/components/Hamburgur";
+import { useRouter } from "next/navigation";
 
 interface IUSER {
 	_id: string;
@@ -31,6 +32,7 @@ interface IUSER {
 }
 
 export function DropdownMenuprofile({ user }: { user: IUSER }) {
+	const router = useRouter();
 	const { logout } = useLogout();
 	return (
 		<DropdownMenu>
@@ -55,6 +57,11 @@ export function DropdownMenuprofile({ user }: { user: IUSER }) {
 						<span>Profile</span>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
+				<DropdownMenuSeparator />
+				<DropdownMenuItem onClick={()=>router.push("/secure/home/createpost")}>
+					<Pen />
+					<span>Create Post</span>
+				</DropdownMenuItem>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem onClick={logout}>
 					<LogOut />
@@ -104,7 +111,7 @@ const Layout = ({ children }: LayoutProps) => {
 							}
 						</div>
 						<div className="pt-2 border-t font-thin text-md border-gray-500">
-							
+
 							<div
 								className={`cursor-pointer hover:bg-slate-900 transition-all px-4 py-2 ${index === 0 ? "bg-slate-800" : ""}`}
 								onClick={() => setIndex(0)}

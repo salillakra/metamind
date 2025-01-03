@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Tag } from "lucide-react";
 import React from "react";
 
@@ -7,16 +13,20 @@ interface AdminPost {
   description: string;
   tags: string[];
   createdAt: Date;
+  className?: string;
 }
 
 const AdminPostCard = ({
+  className,
   title,
   description,
   tags,
   createdAt,
 }: AdminPost) => {
   return (
-    <Card className="w-full sm:max-w-lg bg-gray-900 border border-gray-700 rounded-lg shadow-md">
+    <Card
+      className={`w-full max-w-full sm:max-w-lg bg-gray-900 border border-gray-700 rounded-lg shadow-md ${className}`}
+    >
       <CardHeader>
         <CardTitle className="text-lg font-semibold text-white truncate">
           {title}
@@ -37,11 +47,14 @@ const AdminPostCard = ({
           ))}
         </div>
         <div className="text-xs text-gray-500">
-          Created on {new Date(createdAt).toLocaleDateString("en-IN", {
+          Created on{" "}
+          {new Date(createdAt).toLocaleDateString("en-IN", {
             day: "2-digit",
             month: "short",
             year: "numeric",
-          })} at {new Date(createdAt).toLocaleTimeString("en-IN", {
+          })}{" "}
+          at{" "}
+          {new Date(createdAt).toLocaleTimeString("en-IN", {
             hour: "2-digit",
             minute: "2-digit",
           })}

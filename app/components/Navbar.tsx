@@ -20,7 +20,7 @@ export function Navbar() {
 
     return (
         <>
-            <nav className="flex mt-2 items-center justify-between bg-base-100 px-4 py-2 shadow-md">
+            <nav className="flex relative items-center justify-between bg-base-100 px-4 py-2 shadow-md">
                 <div className="flex-1">
                     <Logo className="absolute top-2 left-3" />
                 </div>
