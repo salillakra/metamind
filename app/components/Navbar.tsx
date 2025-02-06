@@ -1,19 +1,10 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import Logo from "./Logo";
 import { useAuth } from "@/hooks/useAuth";
-import { DropdownMenuprofile } from "../secure/home/layout";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { DropdownMenuprofile } from "./DropdownMenuprofile";
 
 export function Navbar() {
     const { user } = useAuth()

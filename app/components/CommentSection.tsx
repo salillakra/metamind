@@ -11,9 +11,9 @@ import {
     FormControl,
     FormField,
     FormItem,
-    FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import Image from 'next/image'
 
 
 const FormSchema = z.object({
@@ -30,42 +30,44 @@ const commentcomp = () => {
 
 
     return (
-        <div className='mx-3'>
-            <article className="p-6 text-base bg-white rounded-lg shadow-md dark:bg-primary-foreground">
-                <footer className="flex justify-between items-center mb-2">
-                    <div className="flex items-center">
-                        <img
-                            className="mr-2 w-8 h-8 rounded-full"
-                            src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
-                            alt="Michael Gough"
-                        />
-                        <div>
-                            <p className="text-sm font-semibold text-gray-900 dark:text-white">Michael Gough</p>
-                            <p className="text-xs text-gray-600 dark:text-gray-400">
-                                <time dateTime="2022-02-08" title="February 8th, 2022">Feb. 8, 2022</time>
-                            </p>
-                        </div>
-                    </div>
-                </footer>
-                <p className="text-gray-700 dark:text-gray-300">
-                    very informative
+      <div className="mx-3">
+        <article className="p-6 text-base bg-white rounded-lg shadow-md dark:bg-primary-foreground">
+          <footer className="flex justify-between items-center mb-2">
+            <div className="flex items-center">
+              <Image
+                className="mr-2 w-8 h-8 rounded-full"
+                src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                alt="Michael Gough"
+                width={32}
+                height={32}
+              />
+              <div>
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                  Michael Gough
                 </p>
-                <div className="flex items-center mt-4 space-x-4">
-                    <button
-                        type="button"
-                        className="flex items-center text-sm text-red-600 hover:underline dark:text-blue-400 font-medium"
-                    >
-
-                        <Heart size={30} className="w-4 text-red-500  h-4 mr-1" />
-                    </button>
-                </div>
-            </article>
-
-        </div>
-    )
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  <time dateTime="2022-02-08" title="February 8th, 2022">
+                    Feb. 8, 2022
+                  </time>
+                </p>
+              </div>
+            </div>
+          </footer>
+          <p className="text-gray-700 dark:text-gray-300">very informative</p>
+          <div className="flex items-center mt-4 space-x-4">
+            <button
+              type="button"
+              className="flex items-center text-sm text-red-600 hover:underline dark:text-blue-400 font-medium"
+            >
+              <Heart size={30} className="w-4 text-red-500  h-4 mr-1" />
+            </button>
+          </div>
+        </article>
+      </div>
+    );
 }
 
-function CommentSection(props: any) {
+function CommentSection() {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     })

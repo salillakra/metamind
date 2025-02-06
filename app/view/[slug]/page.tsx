@@ -5,7 +5,6 @@ import Image from "next/image";
 import Spinner from "@/app/components/Spinner";
 import { Eye, Heart } from "lucide-react";
 import { updateViews } from "@/Post/UpdateViews";
-import CommentSection from "@/app/components/CommentSection";
 
 const Page = () => {
   const [post, setPost] = React.useState({
@@ -112,7 +111,7 @@ const Page = () => {
       <div className="p-8 mt-8 max-w-screen-lg mx-auto bg-primary-foreground shadow-lg rounded-lg">
         {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-4">
-          {post.tags.map((tag, index) => (
+          {post.tags.map((tag) => (
             <span
               key={tag}
               className="text-xs bg-blue-600 text-white px-3 py-1 rounded-full font-medium hover:bg-blue-400 transition duration-200"

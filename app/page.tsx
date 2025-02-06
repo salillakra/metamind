@@ -26,8 +26,12 @@ export type Post = {
 };
 
 const HomePage = () => {
-  const [data, setData] = useState({
-    posts: [] as Post[],
+  const [data, setData] = useState<{
+    posts: Post[];
+    loading: boolean;
+    error: string | null;
+  }>({
+    posts: [],
     loading: true,
     error: null,
   });
@@ -40,7 +44,7 @@ const HomePage = () => {
       setData({ posts: result.posts, loading: false, error: null });
     } catch (error) {
       console.error(error);
-      setData({ posts: [], loading: false, error: error.message });
+      setData({ posts: [], loading: false, error: (error as Error).message });
     }
   };
 

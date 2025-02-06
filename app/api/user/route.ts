@@ -1,8 +1,8 @@
-import { type NextRequest, NextResponse } from "next/server";
+import {  NextResponse } from "next/server";
 import * as jose from "jose";
 import { cookies } from "next/headers";
 
-export const GET = async (req: NextRequest) => {
+export const GET = async () => {
   try {
     const cookieStore = cookies();
     const token = cookieStore.get("token");

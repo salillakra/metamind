@@ -8,13 +8,6 @@ const MyPostsPage = () => {
   const { user, loading } = useAuth();
   const [posts, setPosts] = useState<IPost[]>([]);
 
-  useEffect(() => {
-    console.log("User in useEffect:", user);
-    if (user) {
-      fetchPosts();
-    }
-  }, [user]);
-
   const fetchPosts = async () => {
     try {
       const response = await fetch("/api/get-all-author-posts", {
@@ -34,6 +27,13 @@ const MyPostsPage = () => {
       console.error("Error fetching posts:", error);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      fetchPosts();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   if (loading) {
     return <div className="text-center">Loading...</div>;

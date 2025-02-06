@@ -24,10 +24,17 @@ export const GET = async (
 			post: post,
 			author: author,
 		});
-	} catch (error) {
-		return NextResponse.json(
-			{ success: false, error: error.message },
-			{ status: 500 },
-		);
+	} catch (error: unknown) {
+		if (error instanceof Error) {
+			return NextResponse.json(
+				{ success: false, error: error.message },
+				{ status: 500 },
+			);
+		} else {
+			return NextResponse.json(
+				{ success: false, error: "An unknown error occurred" },
+				{ status: 500 },
+			);
+		}
 	}
 };

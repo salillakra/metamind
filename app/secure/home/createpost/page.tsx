@@ -64,7 +64,7 @@ const formSchema = z.object({
 });
 
 export default function Page() {
-	const { uploading, uploadedUrl, error, uploadImage } = useImageUpload();
+	const { uploading, uploadedUrl, uploadImage } = useImageUpload();
 	const { user } = useAuth();
 	const router = useRouter()
 	const { toast } = useToast();
