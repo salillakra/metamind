@@ -5,7 +5,6 @@ import Spinner from "./components/Spinner";
 import Navbar from "./components/Navbar";
 import { connectDB } from "@/db/connect";
 
-
 export type Post = {
   post: {
     _id: string;
@@ -38,7 +37,7 @@ const HomePage = () => {
 
   const fetchPosts = async () => {
     try {
-      await connectDB()
+      await connectDB();
       const response = await fetch("/api/get-all-published-posts");
       const result = await response.json();
       setData({ posts: result.posts, loading: false, error: null });
@@ -57,25 +56,26 @@ const HomePage = () => {
       <Navbar />
       {data.loading && <Spinner />}
       {/* <h1 className="text-4xl font-bold text-white mb-8">Latest Posts</h1> */}
-      <div className="grid w-full md:mx-10  gap-8 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
-        {data.posts.map((post: Post) => (
-          <PostCard
-            link={`/view/${post.post._id}`}
-            key={post.post._id}
-            title={post.post.title}
-            category={post.post.category}
-            imageURL={post.post.imageURL}
-            tags={post.post.tags}
-            likes={post.post.likes}
-            views={post.post.views}
-            description={post.post.description}
-            createdAt={post.post.createdAt}
-            profilePic={post.author.profilePic}
-            firstName={post.author.firstName}
-            lastName={post.author.lastName}
-          />
-        ))}
-
+      <div className="flex justify-center h-screen items-center">
+        <div className="grid w-full max-w-7xl gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {data.posts.map((post: Post) => (
+            <PostCard
+              link={`/view/${post.post._id}`}
+              key={post.post._id}
+              title={post.post.title}
+              category={post.post.category}
+              imageURL={post.post.imageURL}
+              tags={post.post.tags}
+              likes={post.post.likes}
+              views={post.post.views}
+              description={post.post.description}
+              createdAt={post.post.createdAt}
+              profilePic={post.author.profilePic}
+              firstName={post.author.firstName}
+              lastName={post.author.lastName}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
