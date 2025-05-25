@@ -38,7 +38,12 @@ const HomePage = () => {
   const fetchPosts = async () => {
     try {
       await connectDB();
+      console.log("Connected to the database");
       const response = await fetch("/api/get-all-published-posts");
+      if (!response.ok) {
+        throw new Error("Failed to fetch posts");
+      }
+      console.log("Fetching posts from API");
       const result = await response.json();
       setData({ posts: result.posts, loading: false, error: null });
     } catch (error) {
