@@ -1,13 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { PostModel } from "@/db/post";
-import { UserModel } from "@/db/user";
-import { connectDB } from "@/db/connect";
-
-interface Post {
-  _id: string;
-  authorId: string;
-  // add other fields as needed, e.g. title: string; content: string;
-}
+import prisma from "@/lib/prisma";
 
 export const GET = async (
   req: NextRequest,
@@ -16,22 +8,49 @@ export const GET = async (
   const { params } = context;
 
   try {
-    await connectDB();
+    // Fetch the post with its author using Prisma
+    const post = await prisma.post.findUnique({
+      where: {
+        id: params.postId,
+      },
+      include: {
+        author: true,
+      },
+    });
 
-    // Fetch the post as a plain JS object
-    const post = (await PostModel.findById(
-      params.postId
-    ).lean()) as Post | null;
     if (!post) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
-    // Fetch the author as a plain JS object
-    const author = await UserModel.findById(post.authorId).lean();
+    // Transform the data to match the expected structure in the frontend
+    const transformedPost = {
+      _id: post.id,
+      title: post.title,
+      content: post.content,
+      authorId: post.authorId,
+      tags: post.tags,
+      isDraft: post.isDraft,
+      isPublished: post.isPublished,
+      category: post.category,
+      imageURL: post.imageURL,
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
+    };
+
+    const transformedAuthor = post.author
+      ? {
+          _id: post.author.id,
+          username: post.author.username,
+          email: post.author.email,
+          firstName: post.author.firstName,
+          lastName: post.author.lastName,
+          imageURL: post.author.imageURL,
+        }
+      : null;
 
     return NextResponse.json({
-      post,
-      author,
+      post: transformedPost,
+      author: transformedAuthor,
     });
   } catch (error: unknown) {
     console.error("Error in GET post:", error);
