@@ -1,5 +1,6 @@
 "use client";
 
+import { User } from "@/lib/generated/prisma";
 import { useEffect, useState } from "react";
 
 const getUser = async () => {
@@ -18,18 +19,8 @@ const getUser = async () => {
   return user.payload;
 };
 
-interface IUSER {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  username: string;
-  profilePic: string;
-  bio: string;
-}
-
-export const useAuth = (): { user: IUSER | null; loading: boolean } => {
-  const [user, setUser] = useState<IUSER | null>(null);
+export const useAuth = (): { user: User | null; loading: boolean } => {
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   const asyncEffect = async () => {
