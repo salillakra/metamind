@@ -14,9 +14,9 @@ import { Superscript } from "@tiptap/extension-superscript";
 import { Underline } from "@tiptap/extension-underline";
 
 // --- Custom Extensions ---
-import { Link } from "@/components/tiptap-extension/link-extension";
-import { Selection } from "@/components/tiptap-extension/selection-extension";
-import { TrailingNode } from "@/components/tiptap-extension/trailing-node-extension";
+import { Link } from "@components/tiptap-extension/link-extension";
+import { Selection } from "@components/tiptap-extension/selection-extension";
+import { TrailingNode } from "@components/tiptap-extension/trailing-node-extension";
 
 // --- UI Primitives ---
 import { Button } from "@components/tiptap-ui-primitive/button";
@@ -28,7 +28,7 @@ import {
 } from "@components/tiptap-ui-primitive/toolbar";
 
 // --- Tiptap Node ---
-import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node/image-upload-node-extension";
+import { ImageUploadNode } from "@components/tiptap-node/image-upload-node/image-upload-node-extension";
 import "@/components/tiptap-node/code-block-node/code-block-node.scss";
 import "@/components/tiptap-node/list-node/list-node.scss";
 import "@/components/tiptap-node/image-node/image-node.scss";
@@ -65,7 +65,7 @@ import { useWindowSize } from "@/hooks/use-window-size";
 import { useCursorVisibility } from "@/hooks/use-cursor-visibility";
 
 // --- Components ---
-import { ThemeToggle } from "@/components/tiptap-templates/simple/theme-toggle";
+import { ThemeToggle } from "@components/tiptap-templates/simple/theme-toggle";
 
 // --- Lib ---
 import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
@@ -73,7 +73,7 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss";
 
-import content from "@/components/tiptap-templates/simple/data/content.json";
+import content from "@components/tiptap-templates/simple/data/content.json";
 
 const MainToolbarContent = ({
   onHighlighterClick,

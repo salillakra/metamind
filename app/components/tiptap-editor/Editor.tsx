@@ -1,4 +1,5 @@
 "use client";
+
 import * as React from "react";
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react";
 
@@ -18,50 +19,50 @@ import { Superscript } from "@tiptap/extension-superscript";
 import { Underline } from "@tiptap/extension-underline";
 
 // --- Custom Extensions ---
-import { Link } from "@components/tiptap-extension/link-extension";
-import { Selection } from "@components/tiptap-extension/selection-extension";
-import { TrailingNode } from "@components/tiptap-extension/trailing-node-extension";
+import { Link } from "@/app/components/tiptap-extension/link-extension";
+import { Selection } from "@/app/components/tiptap-extension/selection-extension";
+import { TrailingNode } from "@/app/components/tiptap-extension/trailing-node-extension";
 
 // --- UI Primitives ---
-import { Button } from "@components/tiptap-ui-primitive/button";
-import { Spacer } from "@components/tiptap-ui-primitive/spacer";
+import { Button } from "@/app/components/tiptap-ui-primitive/button";
+import { Spacer } from "@/app/components/tiptap-ui-primitive/spacer";
 import {
   Toolbar,
   ToolbarGroup,
   ToolbarSeparator,
-} from "@components/tiptap-ui-primitive/toolbar";
+} from "@/app/components/tiptap-ui-primitive/toolbar";
 
 // --- Tiptap Node ---
-import { ImageUploadNode } from "@components/tiptap-node/image-upload-node/image-upload-node-extension";
+import { ImageUploadNode } from "@/app/components/tiptap-node/image-upload-node/image-upload-node-extension";
 import "@components/tiptap-node/code-block-node/code-block-node.scss";
 import "@components/tiptap-node/list-node/list-node.scss";
 import "@components/tiptap-node/image-node/image-node.scss";
 import "@components/tiptap-node/paragraph-node/paragraph-node.scss";
 
 // --- Tiptap UI ---
-import { HeadingDropdownMenu } from "@components/tiptap-ui/heading-dropdown-menu";
-import { ImageUploadButton } from "@components/tiptap-ui/image-upload-button";
-import { ListDropdownMenu } from "@components/tiptap-ui/list-dropdown-menu";
-import { BlockquoteButton } from "@components/tiptap-ui/blockquote-button";
-import { CodeBlockButton } from "@components/tiptap-ui/code-block-button";
+import { HeadingDropdownMenu } from "@/app/components/tiptap-ui/heading-dropdown-menu";
+import { ImageUploadButton } from "@/app/components/tiptap-ui/image-upload-button";
+import { ListDropdownMenu } from "@/app/components/tiptap-ui/list-dropdown-menu";
+import { BlockquoteButton } from "@/app/components/tiptap-ui/blockquote-button";
+import { CodeBlockButton } from "@/app/components/tiptap-ui/code-block-button";
 import {
   ColorHighlightPopover,
   ColorHighlightPopoverContent,
   ColorHighlightPopoverButton,
-} from "@components/tiptap-ui/color-highlight-popover";
+} from "@/app/components/tiptap-ui/color-highlight-popover";
 import {
   LinkPopover,
   LinkContent,
   LinkButton,
-} from "@components/tiptap-ui/link-popover";
-import { MarkButton } from "@components/tiptap-ui/mark-button";
-import { TextAlignButton } from "@components/tiptap-ui/text-align-button";
-import { UndoRedoButton } from "@components/tiptap-ui/undo-redo-button";
+} from "@/app/components/tiptap-ui/link-popover";
+import { MarkButton } from "@/app/components/tiptap-ui/mark-button";
+import { TextAlignButton } from "@/app/components/tiptap-ui/text-align-button";
+import { UndoRedoButton } from "@/app/components/tiptap-ui/undo-redo-button";
 
 // --- Icons ---
-import { ArrowLeftIcon } from "@components/tiptap-icons/arrow-left-icon";
-import { HighlighterIcon } from "@components/tiptap-icons/highlighter-icon";
-import { LinkIcon } from "@components/tiptap-icons/link-icon";
+import { ArrowLeftIcon } from "@/app/components/tiptap-icons/arrow-left-icon";
+import { HighlighterIcon } from "@/app/components/tiptap-icons/highlighter-icon";
+import { LinkIcon } from "@/app/components/tiptap-icons/link-icon";
 
 // --- Hooks ---
 import { useMobile } from "@hooks/use-mobile";
@@ -69,7 +70,7 @@ import { useWindowSize } from "@/hooks/use-window-size";
 import { useCursorVisibility } from "@/hooks/use-cursor-visibility";
 
 // --- Components ---
-import { ThemeToggle } from "@components/tiptap-templates/simple/theme-toggle";
+import { ThemeToggle } from "@/app/components/tiptap-templates/simple/theme-toggle";
 
 // --- Lib ---
 import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
@@ -77,7 +78,8 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
 // --- Styles ---
 import "@components/tiptap-templates/simple/simple-editor.scss";
 
-import content from "@components/tiptap-templates/simple/data/content.json";
+import defaultContent from "@components/tiptap-templates/simple/data/content.json";
+import { CurrentPost } from "@/store/CurrentPost";
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -184,13 +186,24 @@ const MobileToolbarContent = ({
   </>
 );
 
-function SimpleEditor() {
+function Editor({
+  setHTMLProp,
+  initialContent = "",
+}: {
+  setHTMLProp: React.Dispatch<React.SetStateAction<string>>;
+  initialContent?: string;
+}) {
   const isMobile = useMobile();
   const windowSize = useWindowSize();
   const [mobileView, setMobileView] = React.useState<
     "main" | "highlighter" | "link"
   >("main");
   const toolbarRef = React.useRef<HTMLDivElement>(null);
+
+  // Use the initialContent passed from the props or fallback to default content
+  const content = initialContent || defaultContent;
+
+  console.log("Editor Content:", content);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -239,6 +252,30 @@ function SimpleEditor() {
     }
   }, [isMobile, mobileView]);
 
+  React.useEffect(() => {
+    if (!editor) return;
+
+    const updateHtml = () => {
+      const content = editor.getHTML();
+      if (!content) throw Error("Content is empty");
+      setHTMLProp(content);
+      CurrentPost.setState((state) => {
+        return {
+          ...state,
+          content: content,
+        };
+      });
+
+      console.log("Current Post Content:", CurrentPost.state.content);
+    };
+
+    editor.on("update", updateHtml);
+
+    return () => {
+      editor.off("update", updateHtml);
+    };
+  }, [editor, setHTMLProp]);
+
   return (
     <EditorContext.Provider value={{ editor }}>
       <Toolbar
@@ -276,4 +313,4 @@ function SimpleEditor() {
   );
 }
 
-export default SimpleEditor;
+export default Editor;
