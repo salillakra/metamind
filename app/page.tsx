@@ -1,9 +1,17 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import PostCard from "./components/PostCard";
-import Spinner from "./components/Spinner";
+import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import Navbar from "./components/Navbar";
-import { connectDB } from "@/db/connect";
+import PostCard from "./components/PostCard";
+import FeaturedPost from "./components/FeaturedPost";
+import TrendingTags from "./components/TrendingTags";
+import CategorySection from "./components/CategorySection";
+import Newsletter from "./components/Newsletter";
+import PostSkeleton from "./components/PostSkeleton";
+import FeaturedPostSkeleton from "./components/FeaturedPostSkeleton";
+import Footer from "./components/Footer";
+import { Button } from "@/components/ui/button";
+import { Search, RefreshCw, ArrowRight } from "lucide-react";
 
 export type Post = {
   post: {
@@ -24,64 +32,306 @@ export type Post = {
   };
 };
 
+export type CategoryWithPosts = {
+  category: string;
+  posts: Post[];
+};
+
+// API fetch functions
+const fetchPosts = async (): Promise<Post[]> => {
+  const response = await fetch("/api/get-all-published-posts");
+  if (!response.ok) {
+    throw new Error("Failed to fetch posts");
+  }
+  const result = await response.json();
+  return result.posts;
+};
+
+const fetchFeaturedPosts = async (): Promise<Post[]> => {
+  const response = await fetch("/api/get-featured-posts");
+  if (!response.ok) {
+    throw new Error("Failed to fetch featured posts");
+  }
+  const result = await response.json();
+  return result.posts;
+};
+
+const fetchTrendingTags = async (): Promise<
+  { tag: string; count: number }[]
+> => {
+  const response = await fetch("/api/get-trending-tags");
+  if (!response.ok) {
+    throw new Error("Failed to fetch trending tags");
+  }
+  const result = await response.json();
+  return result.trendingTags;
+};
+
+const fetchCategoriesWithPosts = async (): Promise<CategoryWithPosts[]> => {
+  const response = await fetch("/api/get-categories-with-posts");
+  if (!response.ok) {
+    throw new Error("Failed to fetch categories");
+  }
+  const result = await response.json();
+  return result.categories;
+};
+
 const HomePage = () => {
-  const [data, setData] = useState<{
-    posts: Post[];
-    loading: boolean;
-    error: string | null;
-  }>({
-    posts: [],
-    loading: true,
-    error: null,
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Using React Query for data fetching
+  const { data: featuredPosts, isLoading: isFeaturedLoading } = useQuery({
+    queryKey: ["featuredPosts"],
+    queryFn: fetchFeaturedPosts,
   });
 
-  const fetchPosts = async () => {
-    try {
-      await connectDB();
-      console.log("Connected to the database");
-      const response = await fetch("/api/get-all-published-posts");
-      if (!response.ok) {
-        throw new Error("Failed to fetch posts");
-      }
-      console.log("Fetching posts from API");
-      const result = await response.json();
-      setData({ posts: result.posts, loading: false, error: null });
-    } catch (error) {
-      console.error(error);
-      setData({ posts: [], loading: false, error: (error as Error).message });
+  const {
+    data: posts,
+    isLoading: isPostsLoading,
+    error: postsError,
+    refetch: refetchPosts,
+  } = useQuery({
+    queryKey: ["posts"],
+    queryFn: fetchPosts,
+  });
+
+  const { data: trendingTags, isLoading: isTagsLoading } = useQuery({
+    queryKey: ["trendingTags"],
+    queryFn: fetchTrendingTags,
+  });
+
+  const { data: categoriesWithPosts, isLoading: isCategoriesLoading } =
+    useQuery({
+      queryKey: ["categoriesWithPosts"],
+      queryFn: fetchCategoriesWithPosts,
+    });
+
+  // Handle search input
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
     }
   };
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+  // Filter posts for initial display
+  const latestPosts = posts?.slice(0, 8);
 
   return (
-    <div className="px-4 text-gray-100">
+    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black text-gray-100">
       <Navbar />
-      {data.loading && <Spinner />}
-      {/* <h1 className="text-4xl font-bold text-white mb-8">Latest Posts</h1> */}
-      <div className="flex justify-center mt-10 items-center">
-        <div className="grid w-full max-w-7xl gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {data.posts.map((post: Post) => (
-            <PostCard
-              link={`/view/${post.post._id}`}
-              key={post.post._id}
-              title={post.post.title}
-              category={post.post.category}
-              imageURL={post.post.imageURL}
-              tags={post.post.tags}
-              likes={post.post.likes}
-              views={post.post.views}
-              description={post.post.description}
-              createdAt={post.post.createdAt}
-              profilePic={post.author.profilePic}
-              firstName={post.author.firstName}
-              lastName={post.author.lastName}
-            />
-          ))}
+
+      {/* Hero Section with Search */}
+      <div className="relative overflow-hidden">
+        {/* Background pattern overlay */}
+        <div className="absolute inset-0 bg-[url('/wallpaper.jpg')] bg-cover bg-center opacity-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-800/30 to-purple-800/30"></div>
+
+        <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32">
+          <div className="text-center">
+            <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-7xl">
+              Welcome to{" "}
+              <span className="bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+                MetaMind
+              </span>
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl text-xl leading-8 text-gray-300">
+              Discover insightful articles and connect with innovative thinkers
+            </p>
+
+            {/* Search Bar */}
+            <form
+              onSubmit={handleSearchSubmit}
+              className="mx-auto mt-10 flex max-w-lg overflow-hidden rounded-full border border-gray-700/50 bg-gray-800/30 shadow-lg backdrop-blur-sm focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/50 transition-all duration-300"
+            >
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={handleSearchInputChange}
+                placeholder="Search articles, topics, or authors..."
+                className="flex-1 border-0 bg-transparent px-6 py-4 text-white placeholder-gray-400 focus:outline-none focus:ring-0"
+              />
+              <button
+                type="submit"
+                className="flex items-center justify-center bg-indigo-600 px-6 text-white transition hover:bg-indigo-700"
+              >
+                <Search className="h-5 w-5" />
+              </button>
+            </form>
+          </div>
         </div>
       </div>
+
+      <main className="mx-auto max-w-7xl px-4 pb-24 sm:px-6">
+        {/* Featured Post Section */}
+        <section className="my-20">
+          <div className="mb-10 flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-white sm:text-3xl">
+              <span className="inline-block border-b-2 border-indigo-500 pb-1">
+                Featured Story
+              </span>
+            </h2>
+
+            {!isFeaturedLoading && (
+              <Button
+                onClick={() => refetchPosts()}
+                variant="ghost"
+                size="sm"
+                className="group text-gray-400 hover:text-white"
+              >
+                <RefreshCw className="mr-2 h-4 w-4 transition-transform group-hover:rotate-180" />
+                Refresh
+              </Button>
+            )}
+          </div>
+
+          {isFeaturedLoading ? (
+            <FeaturedPostSkeleton />
+          ) : featuredPosts && featuredPosts.length > 0 ? (
+            <div className="transform transition duration-300 hover:scale-[1.01] hover:shadow-2xl">
+              <FeaturedPost
+                id={featuredPosts[0].post._id}
+                title={featuredPosts[0].post.title}
+                description={featuredPosts[0].post.description}
+                imageURL={featuredPosts[0].post.imageURL}
+                category={featuredPosts[0].post.category}
+                tags={featuredPosts[0].post.tags}
+                authorName={`${featuredPosts[0].author.firstName} ${featuredPosts[0].author.lastName}`}
+                authorImage={featuredPosts[0].author.profilePic}
+                createdAt={featuredPosts[0].post.createdAt}
+                views={featuredPosts[0].post.views}
+                likes={featuredPosts[0].post.likes}
+              />
+            </div>
+          ) : (
+            <div className="flex h-64 w-full flex-col items-center justify-center rounded-lg bg-gradient-to-br from-gray-800/50 to-gray-900/70 p-8 text-center backdrop-blur-sm shadow-xl">
+              <p className="text-xl font-medium text-gray-300">
+                No featured stories yet
+              </p>
+              <p className="mt-2 text-gray-500">
+                Check back later for featured content
+              </p>
+            </div>
+          )}
+        </section>
+
+        {/* Main Content with Sidebar */}
+        <div className="grid gap-10 lg:grid-cols-3 xl:grid-cols-4">
+          {/* Main Content Area */}
+          <div className="lg:col-span-2 xl:col-span-3">
+            {/* Latest Posts Section */}
+            <section className="mb-20">
+              <h2 className="mb-10 text-2xl font-bold text-white sm:text-3xl">
+                <span className="inline-block border-b-2 border-indigo-500 pb-1">
+                  Latest Articles
+                </span>
+              </h2>
+
+              {isPostsLoading ? (
+                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                  <PostSkeleton count={6} />
+                </div>
+              ) : postsError ? (
+                <div className="rounded-lg bg-red-500/10 p-8 text-center text-red-500 shadow-lg backdrop-blur-sm">
+                  <p className="text-lg font-semibold">Something went wrong</p>
+                  <p className="mt-2">{(postsError as Error).message}</p>
+                  <Button
+                    onClick={() => refetchPosts()}
+                    variant="destructive"
+                    className="mt-4"
+                  >
+                    Try Again
+                  </Button>
+                </div>
+              ) : latestPosts && latestPosts.length > 0 ? (
+                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                  {latestPosts.map((post: Post) => (
+                    <div
+                      key={post.post._id}
+                      className="transform transition duration-300 hover:scale-[1.03] hover:shadow-xl"
+                    >
+                      <PostCard
+                        link={`/view/${post.post._id}`}
+                        title={post.post.title}
+                        category={post.post.category}
+                        imageURL={post.post.imageURL}
+                        tags={post.post.tags}
+                        likes={post.post.likes}
+                        views={post.post.views}
+                        description={post.post.description}
+                        createdAt={post.post.createdAt}
+                        profilePic={post.author.profilePic}
+                        firstName={post.author.firstName}
+                        lastName={post.author.lastName}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex h-64 w-full flex-col items-center justify-center rounded-lg bg-gradient-to-br from-gray-800/50 to-gray-900/70 p-8 text-center backdrop-blur-sm shadow-xl">
+                  <p className="text-xl font-medium text-gray-300">
+                    No posts found
+                  </p>
+                  <p className="mt-2 text-gray-500">
+                    Check back later for new content
+                  </p>
+                </div>
+              )}
+
+              {posts && posts.length > 8 && (
+                <div className="mt-12 text-center">
+                  <Button
+                    onClick={() => (window.location.href = "/posts")}
+                    variant="outline"
+                    className="group border-indigo-600 px-6 py-5 text-lg text-indigo-400 transition-all duration-300 hover:bg-indigo-600 hover:text-white"
+                  >
+                    View All Articles
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Button>
+                </div>
+              )}
+            </section>
+
+            {/* Categories Sections */}
+            {!isCategoriesLoading &&
+              categoriesWithPosts &&
+              categoriesWithPosts.slice(0, 3).map((category) => (
+                <section key={category.category} className="mb-20">
+                  <h2 className="mb-10 text-2xl font-bold text-white sm:text-3xl">
+                    <span className="inline-block border-b-2 border-indigo-500 pb-1">
+                      {category.category}
+                    </span>
+                  </h2>
+                  <CategorySection
+                    title={category.category}
+                    posts={category.posts}
+                  />
+                </section>
+              ))}
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-10">
+            {/* Trending Tags Section */}
+            {!isTagsLoading && trendingTags && trendingTags.length > 0 && (
+              <div className="rounded-xl bg-gradient-to-br from-gray-800/60 to-gray-900/80 p-6 shadow-lg backdrop-blur-sm">
+                <TrendingTags tags={trendingTags} />
+              </div>
+            )}
+
+            {/* Newsletter Section */}
+            <div className="rounded-xl bg-gradient-to-br from-indigo-900/30 to-purple-900/30 p-6 shadow-lg backdrop-blur-sm">
+              <Newsletter />
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <Footer />
     </div>
   );
 };
