@@ -24,7 +24,7 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Update Featured Post
-        run: node --experimental-modules scripts/update-featured-post.js
+        run: node scripts/update-featured-post.js
