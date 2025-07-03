@@ -5,14 +5,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import StatCard from "@/app/components/StatCard";
-import UserPostCard from "@/app/components/UserPostCard";
-import UserPostSkeleton from "@/app/components/UserPostSkeleton";
-import DeleteConfirmDialog from "@/app/components/DeleteConfirmDialog";
+import StatCard from "@components/StatCard";
+import UserPostCard from "@components/UserPostCard";
+import UserPostSkeleton from "@components/UserPostSkeleton";
+import DeleteConfirmDialog from "@components/DeleteConfirmDialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Book, FilePenLine, Eye, Heart, ListFilter, Plus } from "lucide-react";
 import { deletePost } from "@/Post/delete";
-import { toast } from "@/app/components/simple-toast";
+import { toast } from "sonner";
 
 interface Post {
   id: string;
@@ -84,18 +84,18 @@ const Dashboard = () => {
   // Calculate stats
   const totalPosts = posts?.length || 0;
   const publishedPosts = posts?.filter((post) => post.isPublished).length || 0;
-  const draftPosts = posts?.filter((post) => !post.isPublished).length || 0;
+  // const draftPosts = posts?.filter((post) => !post.isPublished).length || 0;
   const totalViews =
     posts?.reduce((sum, post) => sum + (post.stats.views || 0), 0) || 0;
   const totalLikes =
     posts?.reduce((sum, post) => sum + (post.stats.likes || 0), 0) || 0;
 
   const handleCreatePost = () => {
-    router.push("/secure/create-post");
+    router.push("/secure/dashboard/createpost/step-1");
   };
 
   const handleEditPost = (postId: string) => {
-    router.push(`/secure/edit-post/${postId}`);
+    router.push(`/secure/dashboard/edit-post/${postId}`);
   };
 
   const handlePreviewPost = (postId: string) => {
@@ -119,28 +119,16 @@ const Dashboard = () => {
       const result = await deletePost(postToDelete.id);
 
       if (result.success) {
-        toast({
-          title: "Post Deleted",
-          description: "Your post has been successfully deleted.",
-          variant: "default",
-        });
+        toast.success("Your post has been successfully deleted.");
 
         // Refetch posts to update the UI
         refetch();
       } else {
-        toast({
-          title: "Error",
-          description: result.error || "Failed to delete post",
-          variant: "destructive",
-        });
+        toast.error(result.error || "Failed to delete post");
       }
     } catch (error) {
       console.error("Error deleting post:", error);
-      toast({
-        title: "Error",
-        description: "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
+      toast.error("Something went wrong. Please try again.");
     }
 
     setDeleteDialogOpen(false);

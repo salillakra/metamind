@@ -1,16 +1,16 @@
 "use client";
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import Navbar from "./components/Navbar";
-import PostCard from "./components/PostCard";
-import FeaturedPost from "./components/FeaturedPost";
-import TrendingTags from "./components/TrendingTags";
-import CategorySection from "./components/CategorySection";
-import Newsletter from "./components/Newsletter";
-import PostSkeleton from "./components/PostSkeleton";
-import FeaturedPostSkeleton from "./components/FeaturedPostSkeleton";
-import Footer from "./components/Footer";
-import { Button } from "@/components/ui/button";
+import Navbar from "@components/Navbar";
+import PostCard from "@components/PostCard";
+import FeaturedPost from "@components/FeaturedPost";
+import TrendingTags from "@components/TrendingTags";
+import CategorySection from "@components/CategorySection";
+import Newsletter from "@components/Newsletter";
+import PostSkeleton from "@components/PostSkeleton";
+import FeaturedPostSkeleton from "@components/FeaturedPostSkeleton";
+import Footer from "@components/Footer";
+import { Button } from "@components/ui/button";
 import { Search, RefreshCw, ArrowRight } from "lucide-react";
 
 export type Post = {

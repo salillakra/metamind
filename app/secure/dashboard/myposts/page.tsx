@@ -1,11 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import AdminPostCard from "@/app/components/AdminCard";
+import AdminPostCard from "@components/AdminCard";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
-import Spinner from "@/app/components/Spinner";
+import Spinner from "@components/Spinner";
 import type { Post as PostType } from "@/lib/generated/prisma";
-import { PageTransition } from "@/app/components/PageTransition";
+import { PageTransition } from "@components/PageTransition";
 
 const MyPostsPage = () => {
   const { user, loading: authLoading } = useAuth();

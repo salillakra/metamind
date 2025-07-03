@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import { PageTransition } from "@/app/components/PageTransition";
+import { PageTransition } from "@components/PageTransition";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,10 +15,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Spinner from "@/app/components/Spinner";
-import StatCard from "@/app/components/StatCard";
-import AdminPostCard from "@/app/components/AdminCard";
-import ProfileEditForm from "@/app/components/ProfileEditForm";
+import Spinner from "@components/Spinner";
+import StatCard from "@components/StatCard";
+import AdminPostCard from "@components/AdminCard";
+import ProfileEditForm from "@components/ProfileEditForm";
 import { useRouter } from "next/navigation";
 import {
   Edit,
