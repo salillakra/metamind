@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { User } from "@/lib/generated/prisma";
+import { User } from "@prisma/client";
 import {
   Card,
   CardContent,
@@ -107,7 +107,8 @@ const ProfileEditForm = ({
                   result.info !== null &&
                   "secure_url" in result.info
                 ) {
-                  imageUrl = (result.info as { secure_url?: string }).secure_url || "";
+                  imageUrl =
+                    (result.info as { secure_url?: string }).secure_url || "";
                 }
                 setFormData((prev) => ({
                   ...prev,

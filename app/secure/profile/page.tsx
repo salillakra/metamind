@@ -29,7 +29,7 @@ import {
   CalendarDays,
   ArrowRightCircle,
 } from "lucide-react";
-import type { Post as PostType } from "@/lib/generated/prisma";
+import type { Post as PostType } from "@prisma/client";
 
 const ProfilePage = () => {
   const { user, loading: authLoading } = useAuth();

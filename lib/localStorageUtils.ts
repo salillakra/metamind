@@ -1,4 +1,4 @@
-import type { Post as PostSchema } from "@/lib/generated/prisma";
+import type { Post as PostSchema } from "@prisma/client";
 import { CurrentPost } from "@/store/CurrentPost";
 
 const LOCAL_STORAGE_KEY = "metamind_draft_post";

@@ -4,7 +4,7 @@ import AdminPostCard from "@components/AdminCard";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import Spinner from "@components/Spinner";
-import type { Post as PostType } from "@/lib/generated/prisma";
+import type { Post as PostType } from "@prisma/client";
 import { PageTransition } from "@components/PageTransition";
 
 const MyPostsPage = () => {

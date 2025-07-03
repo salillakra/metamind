@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from "@/lib/generated/prisma";
+import { User } from "@prisma/client";
 import { useEffect, useState } from "react";
 
 const getUser = async () => {

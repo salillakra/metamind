@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import useLogout from "@/hooks/useLogout";
-import type { User as PrismaUser } from "@/lib/generated/prisma";
+import type { User as PrismaUser } from "@prisma/client";
 import { motion } from "framer-motion";
 
 // Animation variants for menu items

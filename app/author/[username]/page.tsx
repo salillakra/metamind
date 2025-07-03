@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { User, Post as PostType } from "@/lib/generated/prisma";
+import { User, Post as PostType } from "@prisma/client";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { PageTransition } from "@components/PageTransition";
