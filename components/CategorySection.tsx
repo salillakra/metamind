@@ -1,6 +1,6 @@
 import React from "react";
 import PostCard from "./PostCard";
-import { Post } from "../page";
+import { Post } from "@/app/page";
 
 interface CategorySectionProps {
   title: string;
