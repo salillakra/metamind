@@ -79,7 +79,7 @@ export function Navbar() {
 
         {/* Center Section */}
         <motion.div
-          className="flex-2 flex justify-center"
+          className="flex-2 hidden md:flex justify-center"
           variants={itemVariants}
         >
           <AnimatePresence>
