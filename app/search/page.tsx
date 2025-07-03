@@ -42,12 +42,13 @@ function SearchContent() {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("q") || "";
   const tagQuery = searchParams.get("tag") || "";
+  const categoryQuery = searchParams.get("category") || "";
   const [inputQuery, setInputQuery] = useState(searchQuery);
 
   // Set the query param from URL to input field
   useEffect(() => {
-    setInputQuery(searchQuery || tagQuery || "");
-  }, [searchQuery, tagQuery]);
+    setInputQuery(searchQuery || tagQuery || categoryQuery || "");
+  }, [searchQuery, tagQuery, categoryQuery]);
 
   // Using React Query for data fetching
   const {
@@ -57,8 +58,8 @@ function SearchContent() {
     refetch,
   } = useQuery({
     queryKey: ["searchPosts", searchQuery, tagQuery],
-    queryFn: () => searchPosts(searchQuery || tagQuery),
-    enabled: !!(searchQuery || tagQuery),
+    queryFn: () => searchPosts(searchQuery || tagQuery || categoryQuery),
+    enabled: !!(searchQuery || tagQuery || categoryQuery),
   });
 
   // Handle search input

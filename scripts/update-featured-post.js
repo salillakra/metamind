@@ -9,8 +9,8 @@ async function updateFeaturedPost() {
   try {
     // 1. Reset current featured posts
     await prisma.post.updateMany({
-      where: { featured: true },
-      data: { featured: false },
+      where: { isFeatured: true },
+      data: { isFeatured: false },
     });
 
     console.log("Reset current featured posts");
