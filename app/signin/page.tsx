@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { authenticateUser } from "@/auth/signin";
-
+import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -28,7 +28,8 @@ const formSchema = z.object({
   password: z.string(),
 });
 
-export default function LoginPage() {
+// The inner component that uses useSearchParams
+function SignInContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect");
@@ -76,7 +77,7 @@ export default function LoginPage() {
           Welcome Back{" "}
           <span
             className=" 
-        bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent"
+      bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent"
           >
             Dear
           </span>
@@ -135,5 +136,14 @@ export default function LoginPage() {
         </Form>
       </div>
     </div>
+  );
+}
+
+// Main page component with Suspense boundary
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <SignInContent />
+    </Suspense>
   );
 }
