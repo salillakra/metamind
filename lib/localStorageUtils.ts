@@ -54,7 +54,7 @@ export const restorePostFromLocalStorage = (): boolean => {
 /**
  * Clears the post data from localStorage
  */
-export const clearPostFromLocalStorage = () => {
+export const clearPostFromLocalStorage = async () => {
   if (typeof window !== "undefined") {
     localStorage.removeItem(LOCAL_STORAGE_KEY);
   }
