@@ -85,7 +85,7 @@ const AuthorProfilePage = () => {
           <div className="px-6 py-8 relative">
             <div className="absolute -top-16 left-6 h-32 w-32 border-4 border-gray-800 rounded-full overflow-hidden">
               <Image
-                src={author.imageURL || "/default-image.jpg"}
+                src={author.imageURL || "https://avatar.iran.liara.run/public"}
                 alt={author.username || "Author"}
                 width={120}
                 height={120}
