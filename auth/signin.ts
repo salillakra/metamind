@@ -73,7 +73,7 @@ export const authenticateUser = async (
     if (user) {
       // Generate JWT token and set it as a cookie
       const jwtToken = await generateJwtToken(user);
-      cookies().set("token", jwtToken, {
+      (await cookies()).set("token", jwtToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", // Secure in production
         maxAge: 604800, // 1 week
