@@ -236,7 +236,7 @@ const PostPage = () => {
           }}
         >
           <Image
-            src={data.post?.imageURL || "/default-image.jpg"}
+            src={data.post?.imageURL || "https://avatar.iran.liara.run/public"}
             alt="Post Cover"
             fill
             className="absolute object-cover opacity-80 transform-gpu"
