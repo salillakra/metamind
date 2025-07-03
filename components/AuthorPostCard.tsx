@@ -40,7 +40,7 @@ const UserPostCard = ({
     <Card className="overflow-hidden bg-gray-800 border-gray-700 hover:border-purple-500 transition-all duration-300">
       <div className="relative h-48 w-full overflow-hidden">
         <Image
-          src={imageURL || "/default-image.jpg"}
+          src={imageURL || "https://avatar.iran.liara.run/public"}
           alt={title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -61,7 +61,7 @@ const UserPostCard = ({
           <div className="flex items-center gap-2">
             <div className="relative h-6 w-6 rounded-full overflow-hidden">
               <Image
-                src={authorImage || "/default-image.jpg"}
+                src={authorImage || "https://avatar.iran.liara.run/public"}
                 alt={authorName}
                 fill
                 sizes="24px"
