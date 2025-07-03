@@ -98,9 +98,20 @@ const ProfileEditForm = ({
             <CldUploadWidget
               signatureEndpoint="/api/sign-cloudinary-params"
               onSuccess={(result, { widget }) => {
+                let imageUrl = "";
+                if (
+                  typeof result === "object" &&
+                  result !== null &&
+                  "info" in result &&
+                  typeof result.info === "object" &&
+                  result.info !== null &&
+                  "secure_url" in result.info
+                ) {
+                  imageUrl = (result.info as { secure_url?: string }).secure_url || "";
+                }
                 setFormData((prev) => ({
                   ...prev,
-                  imageURL: result?.info?.secure_url || "",
+                  imageURL: imageUrl,
                 }));
                 widget.close();
               }}
