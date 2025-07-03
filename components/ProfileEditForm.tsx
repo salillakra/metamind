@@ -87,7 +87,9 @@ const ProfileEditForm = ({
           <div className="flex flex-col items-center space-y-4">
             <div className="relative h-32 w-32 rounded-full overflow-hidden border-2 border-gray-700">
               <Image
-                src={formData.imageURL || "/default-image.jpg"}
+                src={
+                  formData.imageURL || "https://avatar.iran.liara.run/public"
+                }
                 alt="Profile"
                 fill
                 className="object-cover"

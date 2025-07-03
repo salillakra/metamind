@@ -80,7 +80,7 @@ const UserPostCard = ({
       {/* Image */}
       <div className="relative h-40 w-full overflow-hidden">
         <Image
-          src={imageURL || "/default-image.jpg"}
+          src={imageURL || "https://avatar.iran.liara.run/public"}
           alt={title}
           fill
           className="object-cover transition-transform duration-500 hover:scale-105"

@@ -18,6 +18,7 @@ import Image from "next/image";
 import { useAuth } from "@/hooks/useAuth";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
+import { CldImage } from "next-cloudinary";
 
 const FormSchema = z.object({
   comment: z.string().min(10, {
@@ -152,7 +153,12 @@ const CommentSection = ({ postId }: { postId: string }) => {
         <div className="bg-gray-50 p-4 rounded-md mb-6">
           <p className="text-gray-700">
             Please{" "}
-            <Link href="/signin" className="text-blue-600 hover:underline">
+            <Link
+              href={`/signin?redirect=${encodeURIComponent(
+                window.location.href
+              )}`}
+              className="text-blue-600 hover:underline"
+            >
               sign in
             </Link>{" "}
             to comment on this post.
@@ -347,7 +353,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, currentUser }) => {
 
   return (
     <div className="flex items-start space-x-4 mb-6">
-      <Image
+      <CldImage
         height={40}
         width={40}
         src={profilePic}
@@ -439,7 +445,8 @@ const ReplyItem: React.FC<ReplyItemProps> = ({ reply, currentUser }) => {
   const replyAuthorName = reply.author
     ? `${reply.author.firstName || ""} ${reply.author.lastName || ""}`.trim()
     : "Anonymous";
-  const replyProfilePic = reply.author?.imageURL || "/default-image.jpg";
+  const replyProfilePic =
+    reply.author?.imageURL || "https://avatar.iran.liara.run/public";
   const replyTimeAgo = formatDistanceToNow(new Date(reply.createdAt), {
     addSuffix: true,
   });
