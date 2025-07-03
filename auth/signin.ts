@@ -8,7 +8,7 @@ import { User } from "@/lib/generated/prisma";
 
 const prisma = new PrismaClient();
 
-const secretKey = new TextEncoder().encode(process.env.SECRET || "");
+const secretKey = new TextEncoder().encode(process.env.SECRET);
 const algorithm = "HS256";
 
 // Ensure SECRET environment variable is defined at the very start
@@ -16,11 +16,12 @@ if (!process.env.SECRET) {
   throw new Error("SECRET environment variable is not defined");
 }
 
+console.log("secret", secretKey);
+console.log("process.env.SECRET", process.env.SECRET);
+
 // Check if user exists and verify password
 const checkUserExistence = async (email: string, password: string) => {
   try {
-    // Ensure the database is connected
-
     const userCredential = await prisma.userCredential.findUnique({
       where: { email },
       select: { password: true, id: true },
