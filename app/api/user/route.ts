@@ -24,6 +24,9 @@ export const GET = async () => {
 
     const secret = new TextEncoder().encode(process.env.SECRET);
 
+    console.log("secret", secret);
+    console.log("process.env.SECRET", process.env.SECRET);
+
     try {
       const user = await jose.jwtVerify(token.value, secret, {
         algorithms: ["HS256"],
