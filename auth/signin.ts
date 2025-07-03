@@ -3,8 +3,8 @@
 import * as jose from "jose";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
-import { PrismaClient } from "@/lib/generated/prisma";
-import { User } from "@/lib/generated/prisma";
+import { PrismaClient } from "@prisma/client";
+import type { User } from "@prisma/client";
 
 const prisma = new PrismaClient();
 

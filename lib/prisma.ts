@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/lib/generated/prisma";
+import { PrismaClient } from "@prisma/client";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -9,8 +9,20 @@ declare global {
 // exhausting your database connection limit.
 // Learn more: https://pris.ly/d/help/next-js-best-practices
 
-const prisma = global.prisma || new PrismaClient();
+const prismaClientSingleton = () => {
+  return new PrismaClient({
+    // Add this output configuration to ensure the query engine is properly bundled
+    // This is needed for Vercel deployment
+    datasources: {
+      db: {
+        url: process.env.DATABASE_URL,
+      },
+    },
+  });
+};
 
-if (process.env.NODE_ENV !== "production") global.prisma = prisma;
+const prisma = globalThis.prisma ?? prismaClientSingleton();
+
+if (process.env.NODE_ENV !== "production") globalThis.prisma = prisma;
 
 export default prisma;
