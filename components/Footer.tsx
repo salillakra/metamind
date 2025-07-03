@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Logo from "./Logo";
-import { Github, Twitter, Linkedin, Mail, Heart } from "lucide-react";
+import { Github, Linkedin, Mail, Heart, Instagram } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -25,7 +25,7 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a
-                href="https://github.com"
+                href="https://github.com/salillakra"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 transition-colors hover:text-indigo-400"
@@ -34,16 +34,16 @@ const Footer = () => {
                 <span className="sr-only">GitHub</span>
               </a>
               <a
-                href="https://twitter.com"
+                href="https://instagram.com/officialsalillakra"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 transition-colors hover:text-indigo-400"
               >
-                <Twitter className="h-5 w-5" />
-                <span className="sr-only">Twitter</span>
+                <Instagram className="h-5 w-5" />
+                <span className="sr-only">Instagram</span>
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://linkedin.com/in/salillakra"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 transition-colors hover:text-indigo-400"
@@ -52,7 +52,7 @@ const Footer = () => {
                 <span className="sr-only">LinkedIn</span>
               </a>
               <a
-                href="mailto:contact@metamind.com"
+                href="mailto:salillakra.dev@gmail.com"
                 className="text-gray-400 transition-colors hover:text-indigo-400"
               >
                 <Mail className="h-5 w-5" />
