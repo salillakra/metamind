@@ -22,18 +22,18 @@ import {
 import { Button } from "@/components/ui/button";
 import { useStore } from "@tanstack/react-store";
 import { tagsStore } from "@/store/Tags";
-import TagPicker from "@/app/components/TagPicker";
+import TagPicker from "@components/TagPicker";
 import { CurrentPost } from "@/store/CurrentPost";
 import { CreatePost } from "@/Post/action";
-import { toast } from "@/hooks/use-toast";
 import { redirect, useRouter } from "next/navigation";
-import StepIndicator from "@/app/components/StepIndicator";
+import StepIndicator from "@components/StepIndicator";
 import {
   clearPostFromLocalStorage,
   restorePostFromLocalStorage,
   savePostToLocalStorage,
 } from "@/lib/localStorageUtils";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const TagMenu = () => {
   const tags = useStore(tagsStore, (state) => state.tags);
@@ -72,25 +72,19 @@ const TagMenu = () => {
         // Clear localStorage after successful post creation
         clearPostFromLocalStorage();
 
-        toast({
-          variant: "default",
-          title: "Post created successfully",
+        toast.success("Post created successfully", {
           description: "Your post is now live",
         });
 
         // Redirect to home page after successful submission
-        router.push("/secure/home");
+        router.push("/secure/dashboard");
       } else {
-        toast({
-          variant: "destructive",
-          title: "Failed to create post",
+        toast.error("Failed to create post", {
           description: response.error,
         });
       }
     } catch (error: unknown) {
-      toast({
-        variant: "destructive",
-        title: "Error",
+      toast.error("Error", {
         description:
           error instanceof Error
             ? error.message
@@ -120,25 +114,19 @@ const TagMenu = () => {
         // Clear localStorage after successful draft creation
         clearPostFromLocalStorage();
 
-        toast({
-          variant: "default",
-          title: "Post Drafted successfully",
+        toast.success("Post Drafted successfully", {
           description: "Your post is now saved as a draft",
         });
 
         // Redirect to home page after successful submission
-        router.push("/secure/home");
+        router.push("/secure/dashboard");
       } else {
-        toast({
-          variant: "destructive",
-          title: "Failed to save post as draft",
+        toast.error("Failed to save post as draft", {
           description: response.error,
         });
       }
     } catch (error: unknown) {
-      toast({
-        variant: "destructive",
-        title: "Error",
+      toast.error("Error", {
         description:
           error instanceof Error
             ? error.message

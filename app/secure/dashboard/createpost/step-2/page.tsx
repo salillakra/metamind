@@ -4,20 +4,19 @@ import { Button } from "@/components/ui/button";
 import { LoaderIcon, MoveRight } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { redirect, useRouter } from "next/navigation";
-import Editor from "@/app/components/tiptap-editor/Editor";
+import Editor from "@components/tiptap-editor/Editor";
 import { CurrentPost } from "@/store/CurrentPost";
-import StepIndicator from "@/app/components/StepIndicator";
+import StepIndicator from "@components/StepIndicator";
 import {
   restorePostFromLocalStorage,
   savePostToLocalStorage,
 } from "@/lib/localStorageUtils";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 const Page = () => {
   const [loading, setLoading] = useState(false);
   const [HTMLProp, setHTMLProp] = useState("");
   const router = useRouter();
-  const { toast } = useToast();
   const post = CurrentPost.state;
 
   // Save content to store and localStorage when user clicks continue
@@ -33,8 +32,7 @@ const Page = () => {
     // Save to localStorage
     savePostToLocalStorage();
 
-    toast({
-      title: "Content Saved",
+    toast.success("Content Saved", {
       description: "Moving to the final step",
     });
 
@@ -64,8 +62,7 @@ const Page = () => {
       if (!restored || !CurrentPost.state.title) {
         return redirect("/secure/dashboard/createpost/step-1");
       } else {
-        toast({
-          title: "Draft Restored",
+        toast.success("Draft Restored", {
           description: "Your previous post draft has been restored",
         });
       }
@@ -73,7 +70,7 @@ const Page = () => {
 
     // Update the HTMLProp with the current content
     setHTMLProp(post.content);
-  }, [post.content, post.title, toast]);
+  }, [post.content, post.title]);
 
   return (
     <div className="min-h-[90vh] flex flex-col">

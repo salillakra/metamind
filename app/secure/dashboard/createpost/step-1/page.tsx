@@ -26,19 +26,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LoaderIcon, Upload, X } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { useAuth } from "@/hooks/useAuth";
-import Spinner from "@/app/components/Spinner";
+import Spinner from "@components/Spinner";
 import { CurrentPost } from "@/store/CurrentPost";
 import { Textarea } from "@/components/ui/textarea";
 import { CldUploadWidget } from "next-cloudinary";
 import { useEffect, useState } from "react";
-import StepIndicator from "@/app/components/StepIndicator";
+import StepIndicator from "@components/StepIndicator";
 import {
   restorePostFromLocalStorage,
   savePostToLocalStorage,
 } from "@/lib/localStorageUtils";
+import { toast } from "sonner";
 
 // Define interfaces for Cloudinary
 interface CloudinaryInfo {
@@ -83,7 +83,6 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
-  const { toast } = useToast();
   const [uploadedUrl, setUploadedUrl] = useState<string>("");
   const [uploading, setUploading] = useState(false);
 
@@ -115,21 +114,17 @@ export default function Page() {
         setUploadedUrl(savedPost.imageURL);
       }
 
-      toast({
-        title: "Draft Restored",
+      toast.success("Draft Restored", {
         description: "Your previous post draft has been restored",
       });
     }
-  }, [form, toast]);
+  }, [form]);
 
   //onSubmit to update the store with the post details
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     if (!user) {
-      toast({
-        title: "Error",
-        description: "You need to be signed in to create a post",
-      });
+      toast.error("You need to be signed in to create a post");
       return false;
     }
 
@@ -148,8 +143,7 @@ export default function Page() {
     // Save to localStorage
     savePostToLocalStorage();
 
-    toast({
-      title: "Details Saved",
+    toast.success("Details Saved", {
       description: "Moving to the next step",
     });
 
