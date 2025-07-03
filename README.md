@@ -83,24 +83,38 @@ Before you begin, ensure you have the following installed:
    Create a `.env` file in the root directory with the following variables:
 
    ```env
-   # Database
-   DATABASE_URL="your_mongodb_connection_string"
 
-   # Auth
-   NEXTAUTH_SECRET="your_auth_secret"
-   NEXTAUTH_URL="http://localhost:3000"
-
-   # Cloudinary
-   CLOUDINARY_CLOUD_NAME="your_cloud_name"
-   CLOUDINARY_API_KEY="your_api_key"
-   CLOUDINARY_API_SECRET="your_api_secret"
    ```
+
+# ⚠️ Do NOT commit real secrets to version control. Replace the placeholder values below with your actual credentials.
+
+NODE_ENV="your_environment" #(development || production)
+SECRET="your-secret-key"
+
+# bcrypt
+
+SALT_ROUNDS="you_know"
+
+# cloudinary
+
+CLOUDINARY_CLOUD_NAME="your-cloudinary-cloud-name"
+CLOUDINARY_API_KEY="your-cloudinary-api-key"
+
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="your-cloudinary-cloud-name"
+NEXT_PUBLIC_CLOUDINARY_API_KEY="your-cloudinary-api-key"
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET="your-upload-preset"
+
+DATABASE_URL="your-mongodb-connection-string"
+
+CLOUDINARY_API_SECRET="your-cloudinary-api-secret"
+
+````
 
 4. Generate Prisma client:
 
-   ```sh
-   npx prisma generate
-   ```
+```sh
+npx prisma generate
+````
 
 5. Push schema to database (development only):
    ```sh
