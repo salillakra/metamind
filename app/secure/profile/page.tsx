@@ -34,7 +34,7 @@ import type { Post as PostType } from "@/lib/generated/prisma";
 const ProfilePage = () => {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState("overview");
+  const [, setActiveTab] = useState("overview");
   const [isEditing, setIsEditing] = useState(false);
 
   // Fetch user posts
