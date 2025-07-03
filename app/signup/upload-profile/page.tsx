@@ -1,17 +1,17 @@
 "use client";
 
-import Logo from "@/app/components/Logo";
-import Spinner from "@/app/components/Spinner";
+import Logo from "@components/Logo";
+import Spinner from "@components/Spinner";
 import { Button } from "@/components/ui/button";
 import { CldUploadWidget } from "next-cloudinary";
 import { Upload } from "lucide-react";
 import Image from "next/image";
-import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { redirect, useRouter } from "next/navigation";
 import { updateProfileImg } from "@/auth/signup";
 import { useStore } from "@tanstack/react-store";
 import { userIdStore } from "@/store/Signup";
+import { toast } from "sonner";
 
 // Define interfaces for Cloudinary
 interface CloudinaryInfo {
@@ -39,36 +39,21 @@ const ProfileUploadPage: React.FC = () => {
 
     try {
       if (!uploadedUrl || !user) {
-        toast({
-          title: "Error",
-          description: "Please upload a profile picture",
-          variant: "destructive",
-        });
+        toast.error("Please upload a profile picture");
         setLoading(false);
         return;
       }
 
       const res = await updateProfileImg(user, uploadedUrl, bio);
       if (res.success) {
-        toast({
-          title: "Success",
-          description: "Profile picture updated!",
-        });
+        toast.success("Profile picture updated!");
         router.push("/signin");
       } else {
-        toast({
-          title: "Error",
-          description: res.message || "Failed to update profile",
-          variant: "destructive",
-        });
+        toast.error(res.message || "Failed to update profile");
       }
     } catch (error) {
       console.error("Profile update error:", error);
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred",
-        variant: "destructive",
-      });
+      toast.error("An unexpected error occurred");
     } finally {
       setLoading(false);
     }

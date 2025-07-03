@@ -2,22 +2,19 @@
 import { useParams } from "next/navigation";
 import React, { useState, useRef } from "react";
 import Image from "next/image";
-import Spinner from "@/app/components/Spinner";
+import Spinner from "@components/Spinner";
 import { Eye, Heart, Calendar, Tag, MessageSquare, Share2 } from "lucide-react";
 import { updateViews } from "@/Post/UpdateViews";
 import { useQuery } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import Navbar from "@/app/components/Navbar";
+import Navbar from "@components/Navbar";
 import { toast } from "sonner";
 
 // Import custom styles for the post content
 import "../post-styles.css";
-import CommentSection from "@/app/components/CommentSection";
-import {
-  useShareDialog,
-  ShareDialogProvider,
-} from "@/app/components/ShareDialog";
+import CommentSection from "@components/CommentSection";
+import { useShareDialog, ShareDialogProvider } from "@components/ShareDialog";
 
 interface Author {
   profilePic: string;

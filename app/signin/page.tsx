@@ -20,7 +20,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Logo from "../components/Logo";
 import Spinner from "../components/Spinner";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -45,26 +45,14 @@ export default function LoginPage() {
     try {
       const value = await authenticateUser(values.email, values.password);
       if (value) {
-        toast({
-          title: "Authentication successful",
-          description: "You are now logged in",
-          variant: "default",
-        });
-        router.push("/secure/home");
+        toast.success("You are now logged in");
+        router.push("/secure/dashboard");
       } else {
-        toast({
-          title: "Authentication failed",
-          description: "Invalid email or password",
-          variant: "destructive",
-        });
+        toast.error("Invalid email or password");
       }
     } catch (error) {
       console.error("Authentication error:", error);
-      toast({
-        title: "Authentication failed",
-        description: "Something went wrong",
-        variant: "destructive",
-      });
+      toast.error("Authentication failed");
     } finally {
       setIsLoading(false);
     }

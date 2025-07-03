@@ -29,8 +29,8 @@ import Logo from "../components/Logo";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import Spinner from "../components/Spinner";
-import { toast } from "@/hooks/use-toast";
 import { userIdStore } from "@/store/Signup";
+import { toast } from "sonner";
 
 const genderOptions: [string, ...string[]] = [
   "Male",
@@ -87,7 +87,7 @@ export default function SignupPage() {
       router.push("/signup/upload-profile");
     } else {
       setloading(false);
-      toast({ variant: "destructive", description: res.message });
+      toast.error(res.message);
     }
   }
 
