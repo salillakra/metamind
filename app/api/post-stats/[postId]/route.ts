@@ -3,15 +3,15 @@ import prisma from "@/lib/prisma";
 
 export const GET = async (
   req: NextRequest,
-  context: { params: { postId: string } }
+  { params }: { params: Promise<{ postId: string }> }
 ) => {
-  const params = context.params;
+  const { postId } = await params;
 
   try {
     // Fetch the post stats using Prisma
     const stats = await prisma.postStats.findFirst({
       where: {
-        postId: params.postId,
+        postId: postId,
       },
     });
 

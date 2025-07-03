@@ -3,15 +3,15 @@ import prisma from "@/lib/prisma";
 
 export const GET = async (
   req: NextRequest,
-  context: { params: { postId: string } }
+  { params }: { params: Promise<{ postId: string }> }
 ) => {
-  const { params } = context;
+  const { postId } = await params;
 
   try {
     // Fetch the post with its author using Prisma
     const post = await prisma.post.findUnique({
       where: {
-        id: params.postId,
+        id: postId,
       },
       include: {
         author: true,
@@ -29,7 +29,6 @@ export const GET = async (
       content: post.content,
       authorId: post.authorId,
       tags: post.tags,
-      isDraft: post.isDraft,
       isPublished: post.isPublished,
       category: post.category,
       imageURL: post.imageURL,

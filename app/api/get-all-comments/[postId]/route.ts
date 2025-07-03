@@ -3,15 +3,15 @@ import prisma from "@/lib/prisma";
 
 export const GET = async (
   req: NextRequest,
-  context: { params: { postId: string } }
+  { params }: { params: Promise<{ postId: string }> }
 ) => {
-  const { params } = context;
+  const { postId } = await params;
 
   try {
     // Fetch the comments stats using Prisma
     const comments = await prisma.comment.findMany({
       where: {
-        postId: params.postId,
+        postId: postId,
       },
       include: {
         author: {
