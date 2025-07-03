@@ -1,13 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 
-// Initialize PrismaClient with explicit configuration for ES modules
 const prisma = new PrismaClient();
 
 async function updateFeaturedPost() {
   console.log("Starting featured post update process...");
 
   try {
-    // 1. Reset current featured posts
+    // Reset current featured posts
     await prisma.post.updateMany({
       where: { isFeatured: true },
       data: { isFeatured: false },
@@ -15,42 +14,45 @@ async function updateFeaturedPost() {
 
     console.log("Reset current featured posts");
 
-    // 2. Find candidate posts
-    // Criteria: Published posts with good engagement (likes/views), not featured recently
-    // You can customize this query based on your schema and requirements
     const candidates = await prisma.post.findMany({
       where: {
-        published: true,
-        // Add other criteria as needed
+        isPublished: true,
       },
-      orderBy: [
-        // Prioritize posts with higher engagement
-        { likes: "desc" },
-        { views: "desc" },
-        // Add recency as a factor
-        { createdAt: "desc" },
-      ],
-      take: 10, // Get top 10 candidates
+      orderBy: [{ createdAt: "desc" }],
+      take: 20, 
       include: {
         author: true,
+        PostStats: true,
       },
     });
 
-    if (candidates.length === 0) {
+    candidates.sort((a, b) => {
+      const aStats = a.PostStats[0] || { views: 0, likes: 0 };
+      const bStats = b.PostStats[0] || { views: 0, likes: 0 };
+
+      if (bStats.views !== aStats.views) {
+        return bStats.views - aStats.views; // descending
+      }
+
+      return bStats.likes - aStats.likes; // descending
+    });
+
+    // Take only the top 10 after sorting
+    const topCandidates = candidates.slice(0, 10);
+
+    if (topCandidates.length === 0) {
       console.log("No suitable candidates found for featuring");
       return;
     }
 
-    // 3. Select one post randomly from the top candidates
     const randomIndex = Math.floor(
-      Math.random() * Math.min(candidates.length, 5)
-    ); // Random from top 5
-    const selectedPost = candidates[randomIndex];
+      Math.random() * Math.min(topCandidates.length, 5)
+    );
+    const selectedPost = topCandidates[randomIndex];
 
-    // 4. Update the selected post to be featured
     await prisma.post.update({
       where: { id: selectedPost.id },
-      data: { featured: true },
+      data: { isFeatured: true },
     });
 
     console.log(
@@ -64,7 +66,6 @@ async function updateFeaturedPost() {
   }
 }
 
-// Run the function
 updateFeaturedPost()
   .then(() => {
     console.log("Featured post update completed successfully");
