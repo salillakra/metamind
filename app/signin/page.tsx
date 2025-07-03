@@ -15,12 +15,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 import Logo from "@components/Logo";
 import Spinner from "@components/Spinner";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -29,6 +30,8 @@ const formSchema = z.object({
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,7 +49,11 @@ export default function LoginPage() {
       const value = await authenticateUser(values.email, values.password);
       if (value) {
         toast.success("You are now logged in");
-        router.push("/secure/dashboard");
+        if (redirect) {
+          router.push(redirect);
+        } else {
+          router.push("/secure/dashboard");
+        }
       } else {
         toast.error("Invalid email or password");
       }
@@ -107,7 +114,15 @@ export default function LoginPage() {
                 </FormItem>
               )}
             />
-            <Button type="submit">{"Sign In"}</Button>
+            <Button type="submit">
+              {isLoading ? (
+                <div className="flex items-center justify-center">
+                  <Loader2 className="animate-spin mr-2" /> Signing in
+                </div>
+              ) : (
+                "Sign In"
+              )}
+            </Button>
 
             {/* not registered */}
             <p className="text-center">
