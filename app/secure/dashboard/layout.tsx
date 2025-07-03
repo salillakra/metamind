@@ -10,14 +10,14 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
-import Logo from "@/app/components/Logo";
+import Logo from "@components/Logo";
 import { useAuth } from "@/hooks/useAuth";
-import Spinner from "@/app/components/Spinner";
-import { DropdownMenuprofile } from "@/app/components/DropdownMenuprofile";
+import Spinner from "@components/Spinner";
+import { DropdownMenuprofile } from "@components/DropdownMenuprofile";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSidebarCollapse } from "@/hooks/use-sidebar-collapse";
-import { ThemeToggle } from "@/app/components/tiptap-templates/simple/theme-toggle";
+import { ThemeToggle } from "@components/tiptap-templates/simple/theme-toggle";
 
 interface LayoutProps {
   children: React.ReactNode;

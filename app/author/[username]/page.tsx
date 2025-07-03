@@ -5,11 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 import { User, Post as PostType } from "@/lib/generated/prisma";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import { PageTransition } from "@/app/components/PageTransition";
-import AuthorPostCard from "@/app/components/AuthorPostCard";
+import { PageTransition } from "@components/PageTransition";
+import AuthorPostCard from "@components/AuthorPostCard";
 import { FileText, Mail, User as UserIcon } from "lucide-react";
-import Spinner from "@/app/components/Spinner";
-import UserPostSkeleton from "@/app/components/UserPostSkeleton";
+import Spinner from "@components/Spinner";
+import UserPostSkeleton from "@components/UserPostSkeleton";
 
 const AuthorProfilePage = () => {
   const params = useParams();
