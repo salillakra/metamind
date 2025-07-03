@@ -130,7 +130,7 @@ const ProfilePage = () => {
             <div className="px-6 py-8 relative">
               <div className="absolute -top-16 left-6 h-32 w-32 border-4 border-gray-800 rounded-full overflow-hidden">
                 <Image
-                  src={user.imageURL || "/default-image.jpg"}
+                  src={user.imageURL || "https://avatar.iran.liara.run/public"}
                   alt={user.username || "User"}
                   width={120}
                   height={120}
