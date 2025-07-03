@@ -26,4 +26,4 @@ jobs:
         run: bun install
 
       - name: Update Featured Post
-        run: bun run scripts/update-featured-post.js
+        run: ./scripts/run-update-featured.sh

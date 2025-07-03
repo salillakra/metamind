@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+
+// Initialize PrismaClient with explicit configuration for ES modules
 const prisma = new PrismaClient();
 
 async function updateFeaturedPost() {

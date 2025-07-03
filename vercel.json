@@ -1,4 +1,9 @@
 {
-  "buildCommand": "prisma generate && bun run build",
-  "installCommand": "curl -fsSL https://bun.sh/install | bash && ~/.bun/bin/bun install"
+  "buildCommand": "bunx prisma generate && bun run build",
+  "installCommand": "curl -fsSL https://bun.sh/install | bash && ~/.bun/bin/bun install",
+  "env": {
+    "PRISMA_SCHEMA_ENGINE_BINARY": "/tmp/prisma-schema-engine",
+    "PRISMA_QUERY_ENGINE_BINARY": "/tmp/prisma-query-engine",
+    "PRISMA_BINARY_TARGET": "linux-musl-openssl-3.0.x"
+  }
 }
