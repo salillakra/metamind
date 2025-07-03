@@ -27,9 +27,11 @@ export function Navbar() {
           {user ? (
             <DropdownMenuprofile userData={user} />
           ) : (
-            <Button variant="link" className="bg-blue-500 text-white">
-              <Link href="/signin">Login</Link>
-            </Button>
+            <Link href="/signin">
+              <Button variant="link" className="bg-blue-500 text-white">
+                Login
+              </Button>
+            </Link>
           )}
         </div>
       </nav>
