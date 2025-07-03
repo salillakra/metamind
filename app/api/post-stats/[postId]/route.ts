@@ -5,7 +5,7 @@ export const GET = async (
   req: NextRequest,
   context: { params: { postId: string } }
 ) => {
-  const { params } = context;
+  const params = context.params;
 
   try {
     // Fetch the post stats using Prisma
