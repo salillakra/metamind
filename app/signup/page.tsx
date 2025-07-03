@@ -31,6 +31,7 @@ import { useState } from "react";
 import Spinner from "@components/Spinner";
 import { userIdStore } from "@/store/Signup";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 const genderOptions: [string, ...string[]] = [
   "Male",
@@ -246,7 +247,13 @@ export default function SignupPage() {
                 className="inline-block w-1/2 mx-auto"
                 type="submit"
               >
-                Sign Up
+                {loading ? (
+                  <div className="flex items-center justify-center">
+                    <Loader2 className="animate-spin mr-2" /> Signing up
+                  </div>
+                ) : (
+                  "Sign Up"
+                )}
               </Button>
               <p className="text-center">
                 Already have an account?{" "}
