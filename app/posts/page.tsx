@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import Navbar from "../components/Navbar";
-import PostCard from "../components/PostCard";
-import PostSkeleton from "../components/PostSkeleton";
+import Navbar from "@components/Navbar";
+import PostCard from "@components/PostCard";
+import PostSkeleton from "@components/PostSkeleton";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Filter } from "lucide-react";
 import { Post } from "../page";

@@ -2,18 +2,16 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import Navbar from "../components/Navbar";
-import PostCard from "../components/PostCard";
-import PostSkeleton from "../components/PostSkeleton";
+import Navbar from "@components/Navbar";
+import PostCard from "@components/PostCard";
+import PostSkeleton from "@components/PostSkeleton";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Search } from "lucide-react";
 import { Post } from "../page";
 import { useRouter } from "next/navigation";
+import { Suspense } from "react";
 
-// API fetch functions
 const searchPosts = async (query: string): Promise<Post[]> => {
-  // In a real app, you would call a search API endpoint
-  // For now, we'll get all posts and filter client-side
   const response = await fetch("/api/get-all-published-posts");
   if (!response.ok) {
     throw new Error("Failed to fetch posts");
@@ -23,7 +21,6 @@ const searchPosts = async (query: string): Promise<Post[]> => {
 
   if (!query) return posts;
 
-  // Simple client-side search (would be better on the server)
   return posts.filter((post: Post) => {
     const searchableText = [
       post.post.title,
@@ -39,7 +36,8 @@ const searchPosts = async (query: string): Promise<Post[]> => {
   });
 };
 
-const SearchPage = () => {
+// This component contains the search params logic
+function SearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("q") || "";
@@ -91,7 +89,6 @@ const SearchPage = () => {
             Back to Home
           </Button>
         </div>
-
         {/* Search Header */}
         <div className="mb-12">
           <h1 className="mb-6 text-3xl font-bold text-white sm:text-4xl">
@@ -124,8 +121,7 @@ const SearchPage = () => {
               <Search className="h-5 w-5" />
             </button>
           </form>
-        </div>
-
+        </div>{" "}
         {/* Search Results */}
         <div className="mb-12">
           {isLoading ? (
@@ -190,6 +186,15 @@ const SearchPage = () => {
         </div>
       </main>
     </div>
+  );
+}
+
+// Main page component that uses Suspense boundary correctly
+const SearchPage = () => {
+  return (
+    <Suspense fallback={<PostSkeleton count={8} />}>
+      <SearchContent />
+    </Suspense>
   );
 };
 
