@@ -29,13 +29,14 @@ export const GET = async () => {
           description: post.description,
           tags: post.tags,
           category: post.category || "General",
-          imageURL: post.imageURL || "/default-image.jpg",
+          imageURL: post.imageURL || "https://avatar.iran.liara.run/public",
           createdAt: post.createdAt,
           views: stats.views,
           likes: stats.likes,
         },
         author: {
-          profilePic: post.author?.imageURL || "/default-image.jpg",
+          profilePic:
+            post.author?.imageURL || "https://avatar.iran.liara.run/public",
           firstName: post.author?.firstName || "",
           lastName: post.author?.lastName || "",
         },

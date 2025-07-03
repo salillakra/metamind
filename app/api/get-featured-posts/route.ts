@@ -25,7 +25,7 @@ export const GET = async () => {
           _id: post.id,
           title: post.title,
           category: post.category || "General",
-          imageURL: post.imageURL || "/default-image.jpg",
+          imageURL: post.imageURL || "https://avatar.iran.liara.run/public",
           tags: post.tags,
           description: post.description,
           createdAt: post.createdAt,
@@ -33,7 +33,8 @@ export const GET = async () => {
           views: stats.views,
         },
         author: {
-          profilePic: post.author.imageURL || "/default-image.jpg",
+          profilePic:
+            post.author.imageURL || "https://avatar.iran.liara.run/public",
           firstName: post.author.firstName || "",
           lastName: post.author.lastName || "",
         },

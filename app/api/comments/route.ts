@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 export const POST = async (req: NextRequest) => {
   try {
     // Check authentication
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const token = cookieStore.get("token");
 
     if (!token) {
@@ -31,7 +31,7 @@ export const POST = async (req: NextRequest) => {
         algorithms: ["HS256"],
       });
       userData = verified.payload;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return NextResponse.json(
         { success: false, error: "Invalid authentication token" },

@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 
 export const GET = async () => {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const token = cookieStore.get("token");
 
     if (!token) {
