@@ -5,7 +5,7 @@ import { Mail } from "lucide-react";
 import { toast } from "sonner";
 
 const Newsletter = () => {
-  const [email, setEmail] = useState("");
+  const [, setEmail] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e?.preventDefault();
