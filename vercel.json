@@ -1,4 +1,4 @@
 {
-  "buildCommand": "prisma generate && next build",
-  "installCommand": "npm install --legacy-peer-deps"
+  "buildCommand": "prisma generate && bun run build",
+  "installCommand": "curl -fsSL https://bun.sh/install | bash && ~/.bun/bin/bun install"
 }

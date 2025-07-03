@@ -17,14 +17,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: "18"
-          cache: "npm"
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: bun install
 
       - name: Update Featured Post
-        run: node scripts/update-featured-post.js
+        run: bun run scripts/update-featured-post.js
