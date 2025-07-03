@@ -25,10 +25,10 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { signup } from "@/auth/signup";
 import Link from "next/link";
-import Logo from "../components/Logo";
+import Logo from "@components/Logo";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import Spinner from "../components/Spinner";
+import Spinner from "@components/Spinner";
 import { userIdStore } from "@/store/Signup";
 import { toast } from "sonner";
 
