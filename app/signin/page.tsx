@@ -18,8 +18,8 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
-import Logo from "../components/Logo";
-import Spinner from "../components/Spinner";
+import Logo from "@components/Logo";
+import Spinner from "@components/Spinner";
 import { toast } from "sonner";
 
 const formSchema = z.object({
